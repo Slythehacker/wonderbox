@@ -1,6 +1,7 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import axios from "https://deno.land/x/axiod@0.26.2/mod.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -34,6 +35,43 @@ serve(async (req) => {
     } else if (type === 'anime') {
       // Jikan API (MyAnimeList)
       apiUrl = `https://api.jikan.moe/v4/anime?order_by=score&sort=desc&limit=20`;
+    } else if (type === 'imdb') {
+      // IMDB API via RapidAPI
+      const options = {
+        method: 'GET',
+        url: 'https://imdb8.p.rapidapi.com/actors/get-interesting-jobs',
+        params: {
+          nconst: category || 'nm0001667'
+        },
+        headers: {
+          'x-rapidapi-key': rapidApiKey,
+          'x-rapidapi-host': 'imdb8.p.rapidapi.com'
+        }
+      };
+
+      try {
+        const response = await axios.request(options);
+        const transformedData = response.data?.map((item: any) => ({
+          id: item.id || Math.random().toString(),
+          title: item.title || 'Unknown Title',
+          year: item.year || 'N/A',
+          rating: item.rating || 0,
+          genre: 'IMDB',
+          imageUrl: item.image || '',
+          duration: 'N/A',
+          type: 'imdb'
+        })) || [];
+
+        return new Response(JSON.stringify({ results: transformedData }), {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
+      } catch (error) {
+        console.error('IMDB API Error:', error);
+        return new Response(JSON.stringify({ error: error.message }), {
+          status: 500,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
+      }
     }
 
     console.log('Fetching from:', apiUrl);
