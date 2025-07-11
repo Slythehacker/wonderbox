@@ -1,10 +1,22 @@
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import MovieSection from "@/components/MovieSection";
 import { useMovieData } from "@/hooks/useMovieData";
+import { useAuth } from "@/hooks/useAuth";
 
 const Index = () => {
   const { movies, tvShows, anime, loading, error } = useMovieData();
+  const { user, loading: authLoading } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Redirect authenticated users who land on auth page back to home
+    if (user && window.location.pathname === '/auth') {
+      navigate('/');
+    }
+  }, [user, navigate]);
 
   if (loading) {
     return (

@@ -1,16 +1,7 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import MovieCard from "./MovieCard";
-
-interface Movie {
-  id: string;
-  title: string;
-  year: string;
-  rating: number;
-  genre: string;
-  imageUrl: string;
-  duration?: string;
-}
+import StreamingMovieCard from "./StreamingMovieCard";
+import { Movie } from "@/types/movie";
 
 interface MovieSectionProps {
   title: string;
@@ -69,7 +60,7 @@ const MovieSection = ({ title, movies }: MovieSectionProps) => {
         >
           {movies.map((movie) => (
             <div key={movie.id} className="flex-none w-48">
-              <MovieCard {...movie} />
+              <StreamingMovieCard movie={movie} />
             </div>
           ))}
         </div>

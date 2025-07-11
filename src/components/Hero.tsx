@@ -29,7 +29,7 @@ const Hero = () => {
             <h1 className="text-5xl md:text-7xl font-bold leading-tight">
               Welcome to{" "}
               <span className="bg-gradient-primary bg-clip-text text-transparent">
-                Wonderful
+                Wonderbox
               </span>
             </h1>
 
