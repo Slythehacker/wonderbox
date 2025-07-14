@@ -33,8 +33,35 @@ serve(async (req) => {
       // TMDB TV Shows API
       apiUrl = `https://api.themoviedb.org/3/tv/${category}?api_key=${tmdbApiKey}&language=en-US&page=1`;
     } else if (type === 'anime') {
-      // Jikan API (MyAnimeList)
-      apiUrl = `https://api.jikan.moe/v4/anime?order_by=score&sort=desc&limit=20`;
+      // AniList API
+      const query = `
+        query {
+          Page(page: 1, perPage: 20) {
+            media(type: ANIME, sort: SCORE_DESC, status: FINISHED) {
+              id
+              title {
+                romaji
+                english
+              }
+              startDate {
+                year
+              }
+              averageScore
+              genres
+              coverImage {
+                large
+              }
+              episodes
+              duration
+            }
+          }
+        }
+      `;
+      apiUrl = 'https://graphql.anilist.co';
+      headers = {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      };
     } else if (type === 'imdb') {
       // IMDB API via RapidAPI
       const options = {
@@ -76,26 +103,61 @@ serve(async (req) => {
 
     console.log('Fetching from:', apiUrl);
 
-    const response = await fetch(apiUrl, { headers });
-    const data = await response.json();
+    let response;
+    let data;
+    
+    if (type === 'anime') {
+      const query = `
+        query {
+          Page(page: 1, perPage: 20) {
+            media(type: ANIME, sort: SCORE_DESC, status: FINISHED) {
+              id
+              title {
+                romaji
+                english
+              }
+              startDate {
+                year
+              }
+              averageScore
+              genres
+              coverImage {
+                large
+              }
+              episodes
+              duration
+            }
+          }
+        }
+      `;
+      response = await fetch(apiUrl, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({ query })
+      });
+    } else {
+      response = await fetch(apiUrl, { headers });
+    }
+    
+    data = await response.json();
 
     // Transform data to consistent format
     let transformedData = [];
 
     if (type === 'anime') {
-      transformedData = data.data?.map((item: any) => ({
-        id: item.mal_id.toString(),
-        title: item.title,
-        year: item.aired?.from ? new Date(item.aired.from).getFullYear().toString() : 'N/A',
-        rating: item.score || 0,
-        genre: item.genres?.[0]?.name || 'Anime',
-        imageUrl: item.images?.jpg?.large_image_url || item.images?.jpg?.image_url,
-        duration: item.duration || 'N/A',
+      transformedData = data.data?.Page?.media?.map((item: any) => ({
+        id: item.id.toString(),
+        title: item.title?.english || item.title?.romaji || 'Unknown Title',
+        year: item.startDate?.year?.toString() || 'N/A',
+        rating: item.averageScore ? Math.round(item.averageScore / 10) : 0,
+        genre: item.genres?.[0] || 'Anime',
+        imageUrl: item.coverImage?.large || '',
+        duration: item.episodes ? `${item.episodes} episodes` : 'N/A',
         type: 'anime'
       })) || [];
     } else {
       transformedData = data.results?.map((item: any) => ({
-        id: item.id.toString(),
+        id: type === 'movies' && category === 'imdb' ? `tt${item.id}` : item.id.toString(),
         title: item.title || item.name,
         year: (item.release_date || item.first_air_date)?.substring(0, 4) || 'N/A',
         rating: Math.round(item.vote_average * 10) / 10,
