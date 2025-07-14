@@ -6,9 +6,10 @@ import { Movie } from "@/types/movie";
 interface MovieSectionProps {
   title: string;
   movies: Movie[];
+  onStreamClick?: (movie: Movie) => void;
 }
 
-const MovieSection = ({ title, movies }: MovieSectionProps) => {
+const MovieSection = ({ title, movies, onStreamClick }: MovieSectionProps) => {
   const scrollLeft = () => {
     const container = document.getElementById(`scroll-${title.replace(/\s+/g, '-').toLowerCase()}`);
     if (container) {
@@ -60,7 +61,10 @@ const MovieSection = ({ title, movies }: MovieSectionProps) => {
         >
           {movies.map((movie) => (
             <div key={movie.id} className="flex-none w-48">
-              <StreamingMovieCard movie={movie} />
+              <StreamingMovieCard 
+                movie={movie} 
+                onStreamClick={onStreamClick}
+              />
             </div>
           ))}
         </div>

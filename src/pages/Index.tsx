@@ -5,11 +5,21 @@ import Hero from "@/components/Hero";
 import MovieSection from "@/components/MovieSection";
 import { useMovieData } from "@/hooks/useMovieData";
 import { useAuth } from "@/hooks/useAuth";
+import { Movie } from "@/types/movie";
 
 const Index = () => {
   const { movies, tvShows, anime, loading, error } = useMovieData();
   const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
+  
+  const handleStreamClick = (movie: Movie) => {
+    // Determine content type based on the section
+    let contentType = 'movie';
+    if (tvShows.includes(movie)) contentType = 'tv';
+    if (anime.includes(movie)) contentType = 'anime';
+    
+    navigate(`/streaming/${contentType}/${movie.id}`);
+  };
 
   useEffect(() => {
     // Redirect authenticated users who land on auth page back to home
@@ -51,10 +61,26 @@ const Index = () => {
       <Hero />
       
       <div className="space-y-8 pb-16">
-        <MovieSection title="Trending Movies" movies={movies} />
-        <MovieSection title="Popular TV Shows" movies={tvShows} />
-        <MovieSection title="Top Anime" movies={anime} />
-        <MovieSection title="Mixed Content" movies={[...movies.slice(0, 3), ...tvShows.slice(0, 3), ...anime.slice(0, 3)]} />
+        <MovieSection 
+          title="Trending Movies" 
+          movies={movies} 
+          onStreamClick={handleStreamClick}
+        />
+        <MovieSection 
+          title="Popular TV Shows" 
+          movies={tvShows} 
+          onStreamClick={handleStreamClick}
+        />
+        <MovieSection 
+          title="Top Anime" 
+          movies={anime} 
+          onStreamClick={handleStreamClick}
+        />
+        <MovieSection 
+          title="Mixed Content" 
+          movies={[...movies.slice(0, 3), ...tvShows.slice(0, 3), ...anime.slice(0, 3)]} 
+          onStreamClick={handleStreamClick}
+        />
       </div>
     </div>
   );

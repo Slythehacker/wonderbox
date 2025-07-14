@@ -10,9 +10,10 @@ import { Movie } from '@/types/movie';
 
 interface StreamingMovieCardProps {
   movie: Movie;
+  onStreamClick?: (movie: Movie) => void;
 }
 
-const StreamingMovieCard = ({ movie }: StreamingMovieCardProps) => {
+const StreamingMovieCard = ({ movie, onStreamClick }: StreamingMovieCardProps) => {
   const [isInWatchlist, setIsInWatchlist] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { user } = useAuth();
@@ -79,16 +80,13 @@ const StreamingMovieCard = ({ movie }: StreamingMovieCardProps) => {
     if (!user) {
       toast({
         title: "Sign in required",
-        description: "Please sign in to stream content."
+        description: "Please sign in to stream content.",
+        variant: "destructive",
       });
       return;
     }
     
-    // In a real streaming app, this would open the video player
-    toast({
-      title: "Streaming Feature",
-      description: "This would open the video player in a real streaming platform. Currently showing demo content from APIs."
-    });
+    onStreamClick?.(movie);
   };
 
   const handleDownloadClick = () => {
