@@ -20,10 +20,10 @@ const Navbar = () => {
 
   const navItems = [
     { name: "Home", href: "/" },
-    { name: "Movies", href: "#" },
-    { name: "TV Shows", href: "#" },
-    { name: "Anime", href: "#" },
-    { name: "My List", href: "#" },
+    { name: "Movies", href: "/movies" },
+    { name: "TV Shows", href: "/tv-shows" },
+    { name: "Anime", href: "/anime" },
+    { name: "My List", href: "/watchlist" },
   ];
 
   const handleSignOut = async () => {

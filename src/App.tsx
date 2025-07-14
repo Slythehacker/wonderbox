@@ -7,6 +7,11 @@ import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
 import { Streaming } from "./pages/Streaming";
+import Movies from "./pages/Movies";
+import TVShows from "./pages/TVShows";
+import Anime from "./pages/Anime";
+import Profile from "./pages/Profile";
+import Watchlist from "./pages/Watchlist";
 
 const queryClient = new QueryClient();
 
@@ -19,6 +24,11 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/auth" element={<Auth />} />
+          <Route path="/movies" element={<Movies />} />
+          <Route path="/tv-shows" element={<TVShows />} />
+          <Route path="/anime" element={<Anime />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/watchlist" element={<Watchlist />} />
           <Route path="/streaming/:type/:id" element={<Streaming />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
