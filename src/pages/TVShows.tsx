@@ -5,7 +5,7 @@ import { useMovieData } from '@/hooks/useMovieData';
 import { Loader2 } from 'lucide-react';
 
 const TVShows: React.FC = () => {
-  const { tvShows, loading, error } = useMovieData();
+  const { popularTvShows, topRatedTvShows, airingTodayTvShows, loading, error } = useMovieData();
 
   if (loading) {
     return (
@@ -41,10 +41,22 @@ const TVShows: React.FC = () => {
             </p>
           </div>
           
-          <MovieSection 
-            title="Popular TV Shows" 
-            movies={tvShows}
-          />
+          <div className="space-y-8">
+            <MovieSection 
+              title="Popular TV Shows" 
+              movies={popularTvShows}
+            />
+            
+            <MovieSection 
+              title="Top Rated TV Shows" 
+              movies={topRatedTvShows}
+            />
+            
+            <MovieSection 
+              title="Airing Today" 
+              movies={airingTodayTvShows}
+            />
+          </div>
         </div>
       </main>
     </div>

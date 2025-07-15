@@ -19,14 +19,21 @@ serve(async (req) => {
   }
 
   try {
-    const { type, category } = await req.json();
+    const { type, category, query } = await req.json();
     const tmdbApiKey = Deno.env.get('TMDB_API_KEY');
     const rapidApiKey = Deno.env.get('RAPIDAPI_KEY');
 
     let apiUrl = '';
     let headers: Record<string, string> = {};
 
-    if (type === 'movies') {
+    if (type === 'search') {
+      // Search API
+      if (category === 'movie') {
+        apiUrl = `https://api.themoviedb.org/3/search/movie?api_key=${tmdbApiKey}&language=en-US&query=${encodeURIComponent(query)}&page=1`;
+      } else if (category === 'tv') {
+        apiUrl = `https://api.themoviedb.org/3/search/tv?api_key=${tmdbApiKey}&language=en-US&query=${encodeURIComponent(query)}&page=1`;
+      }
+    } else if (type === 'movies') {
       // TMDB Movies API
       apiUrl = `https://api.themoviedb.org/3/movie/${category}?api_key=${tmdbApiKey}&language=en-US&page=1`;
     } else if (type === 'tv') {

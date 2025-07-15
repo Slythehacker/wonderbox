@@ -6,6 +6,14 @@ interface UseMovieDataReturn {
   movies: Movie[];
   tvShows: Movie[];
   anime: Movie[];
+  trendingMovies: Movie[];
+  topRatedMovies: Movie[];
+  upcomingMovies: Movie[];
+  popularTvShows: Movie[];
+  topRatedTvShows: Movie[];
+  airingTodayTvShows: Movie[];
+  popularAnime: Movie[];
+  topAnime: Movie[];
   loading: boolean;
   error: string | null;
   refetch: () => void;
@@ -15,6 +23,14 @@ export const useMovieData = (): UseMovieDataReturn => {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [tvShows, setTvShows] = useState<Movie[]>([]);
   const [anime, setAnime] = useState<Movie[]>([]);
+  const [trendingMovies, setTrendingMovies] = useState<Movie[]>([]);
+  const [topRatedMovies, setTopRatedMovies] = useState<Movie[]>([]);
+  const [upcomingMovies, setUpcomingMovies] = useState<Movie[]>([]);
+  const [popularTvShows, setPopularTvShows] = useState<Movie[]>([]);
+  const [topRatedTvShows, setTopRatedTvShows] = useState<Movie[]>([]);
+  const [airingTodayTvShows, setAiringTodayTvShows] = useState<Movie[]>([]);
+  const [popularAnime, setPopularAnime] = useState<Movie[]>([]);
+  const [topAnime, setTopAnime] = useState<Movie[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -23,28 +39,41 @@ export const useMovieData = (): UseMovieDataReturn => {
     setError(null);
 
     try {
-      // Fetch movies
-      const moviesResponse = await supabase.functions.invoke('fetch-movies', {
-        body: { type: 'movies', category: 'popular' }
-      });
+      // Fetch multiple movie categories
+      const [
+        moviesResponse,
+        trendingResponse,
+        topRatedResponse,
+        upcomingResponse,
+        tvResponse,
+        topRatedTvResponse,
+        airingTodayResponse,
+        animeResponse,
+        popularAnimeResponse
+      ] = await Promise.all([
+        supabase.functions.invoke('fetch-movies', { body: { type: 'movies', category: 'popular' } }),
+        supabase.functions.invoke('fetch-movies', { body: { type: 'movies', category: 'now_playing' } }),
+        supabase.functions.invoke('fetch-movies', { body: { type: 'movies', category: 'top_rated' } }),
+        supabase.functions.invoke('fetch-movies', { body: { type: 'movies', category: 'upcoming' } }),
+        supabase.functions.invoke('fetch-movies', { body: { type: 'tv', category: 'popular' } }),
+        supabase.functions.invoke('fetch-movies', { body: { type: 'tv', category: 'top_rated' } }),
+        supabase.functions.invoke('fetch-movies', { body: { type: 'tv', category: 'airing_today' } }),
+        supabase.functions.invoke('fetch-movies', { body: { type: 'anime', category: 'top' } }),
+        supabase.functions.invoke('fetch-movies', { body: { type: 'anime', category: 'popular' } })
+      ]);
 
-      // Fetch TV shows
-      const tvResponse = await supabase.functions.invoke('fetch-movies', {
-        body: { type: 'tv', category: 'popular' }
-      });
-
-      // Fetch anime
-      const animeResponse = await supabase.functions.invoke('fetch-movies', {
-        body: { type: 'anime', category: 'top' }
-      });
-
-      if (moviesResponse.error) throw moviesResponse.error;
-      if (tvResponse.error) throw tvResponse.error;
-      if (animeResponse.error) throw animeResponse.error;
-
+      // Set all the data
       setMovies(moviesResponse.data?.results || []);
+      setTrendingMovies(trendingResponse.data?.results || []);
+      setTopRatedMovies(topRatedResponse.data?.results || []);
+      setUpcomingMovies(upcomingResponse.data?.results || []);
       setTvShows(tvResponse.data?.results || []);
+      setPopularTvShows(tvResponse.data?.results || []);
+      setTopRatedTvShows(topRatedTvResponse.data?.results || []);
+      setAiringTodayTvShows(airingTodayResponse.data?.results || []);
       setAnime(animeResponse.data?.results || []);
+      setPopularAnime(popularAnimeResponse.data?.results || []);
+      setTopAnime(animeResponse.data?.results || []);
 
     } catch (err) {
       console.error('Error fetching data:', err);
@@ -67,6 +96,14 @@ export const useMovieData = (): UseMovieDataReturn => {
     movies,
     tvShows,
     anime,
+    trendingMovies,
+    topRatedMovies,
+    upcomingMovies,
+    popularTvShows,
+    topRatedTvShows,
+    airingTodayTvShows,
+    popularAnime,
+    topAnime,
     loading,
     error,
     refetch: fetchData

@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, Menu, X, User, Bell, LogOut, Heart } from "lucide-react";
+import { Search, Menu, X, User, Bell, LogOut, Heart, Loader2 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
+import { useSearch } from "@/hooks/useSearch";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,9 +15,13 @@ import {
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [showSearchResults, setShowSearchResults] = useState(false);
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { searchResults, isSearching, searchMovies, clearSearch } = useSearch();
+  const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const navItems = [
     { name: "Home", href: "/" },
@@ -25,6 +30,24 @@ const Navbar = () => {
     { name: "Anime", href: "/anime" },
     { name: "My List", href: "/watchlist" },
   ];
+
+  const handleSearch = useCallback((query: string) => {
+    setSearchQuery(query);
+    
+    if (searchTimeoutRef.current) {
+      clearTimeout(searchTimeoutRef.current);
+    }
+
+    if (query.trim()) {
+      setShowSearchResults(true);
+      searchTimeoutRef.current = setTimeout(() => {
+        searchMovies(query);
+      }, 300);
+    } else {
+      setShowSearchResults(false);
+      clearSearch();
+    }
+  }, [searchMovies, clearSearch]);
 
   const handleSignOut = async () => {
     const { error } = await signOut();
@@ -42,6 +65,14 @@ const Navbar = () => {
       navigate('/');
     }
   };
+
+  useEffect(() => {
+    return () => {
+      if (searchTimeoutRef.current) {
+        clearTimeout(searchTimeoutRef.current);
+      }
+    };
+  }, []);
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50">
@@ -78,7 +109,41 @@ const Navbar = () => {
                 <Input
                   placeholder="Search movies, shows..."
                   className="pl-10 w-64 bg-muted/50 border-border/50 focus:border-primary"
+                  value={searchQuery}
+                  onChange={(e) => handleSearch(e.target.value)}
+                  onFocus={() => searchQuery && setShowSearchResults(true)}
                 />
+                {showSearchResults && (
+                  <div className="absolute top-full left-0 right-0 mt-2 bg-background border border-border rounded-lg shadow-lg max-h-96 overflow-y-auto z-50">
+                    {isSearching ? (
+                      <div className="flex items-center justify-center p-4">
+                        <Loader2 className="h-6 w-6 animate-spin" />
+                      </div>
+                    ) : searchResults.length > 0 ? (
+                      <div className="p-2 space-y-2">
+                        {searchResults.slice(0, 8).map((movie) => (
+                          <div key={movie.id} className="p-2 hover:bg-muted/50 rounded cursor-pointer" onClick={() => setShowSearchResults(false)}>
+                            <div className="flex items-center space-x-3">
+                              <img 
+                                src={movie.imageUrl} 
+                                alt={movie.title}
+                                className="w-12 h-16 object-cover rounded"
+                              />
+                              <div>
+                                <h4 className="font-medium text-sm">{movie.title}</h4>
+                                <p className="text-xs text-muted-foreground">{movie.year} • {movie.genre}</p>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    ) : searchQuery ? (
+                      <div className="p-4 text-center text-muted-foreground">
+                        No results found
+                      </div>
+                    ) : null}
+                  </div>
+                )}
               </div>
             </div>
 
@@ -142,6 +207,8 @@ const Navbar = () => {
                 <Input
                   placeholder="Search movies, shows..."
                   className="pl-10 bg-muted/50 border-border/50"
+                  value={searchQuery}
+                  onChange={(e) => handleSearch(e.target.value)}
                 />
               </div>
               
