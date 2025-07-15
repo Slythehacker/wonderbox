@@ -1,11 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Navbar from '@/components/Navbar';
 import MovieSection from '@/components/MovieSection';
+import { VideoPlayer } from '@/components/VideoPlayer';
 import { useMovieData } from '@/hooks/useMovieData';
+import { Movie } from '@/types/movie';
 import { Loader2 } from 'lucide-react';
 
 const Anime: React.FC = () => {
   const { topAnime, popularAnime, loading, error } = useMovieData();
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
+
+  const handleStreamClick = (movie: Movie) => {
+    setSelectedMovie(movie);
+    setIsPlaying(true);
+  };
+
+  const handleClosePlayer = () => {
+    setIsPlaying(false);
+    setSelectedMovie(null);
+  };
 
   if (loading) {
     return (
@@ -45,15 +59,28 @@ const Anime: React.FC = () => {
             <MovieSection 
               title="Top Anime" 
               movies={topAnime}
+              onStreamClick={handleStreamClick}
             />
             
             <MovieSection 
               title="Popular Anime" 
               movies={popularAnime}
+              onStreamClick={handleStreamClick}
             />
           </div>
         </div>
       </main>
+
+      {isPlaying && selectedMovie && (
+        <VideoPlayer
+          movie={{
+            id: selectedMovie.id,
+            title: selectedMovie.title,
+            type: selectedMovie.type || 'anime'
+          }}
+          onClose={handleClosePlayer}
+        />
+      )}
     </div>
   );
 };

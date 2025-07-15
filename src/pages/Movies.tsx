@@ -1,11 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Navbar from '@/components/Navbar';
 import MovieSection from '@/components/MovieSection';
+import { VideoPlayer } from '@/components/VideoPlayer';
 import { useMovieData } from '@/hooks/useMovieData';
+import { Movie } from '@/types/movie';
 import { Loader2 } from 'lucide-react';
 
 const Movies: React.FC = () => {
   const { movies, trendingMovies, topRatedMovies, upcomingMovies, loading, error } = useMovieData();
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
+
+  const handleStreamClick = (movie: Movie) => {
+    setSelectedMovie(movie);
+    setIsPlaying(true);
+  };
+
+  const handleClosePlayer = () => {
+    setIsPlaying(false);
+    setSelectedMovie(null);
+  };
 
   if (loading) {
     return (
@@ -45,25 +59,40 @@ const Movies: React.FC = () => {
             <MovieSection 
               title="Popular Movies" 
               movies={movies}
+              onStreamClick={handleStreamClick}
             />
             
             <MovieSection 
               title="Now Playing" 
               movies={trendingMovies}
+              onStreamClick={handleStreamClick}
             />
             
             <MovieSection 
               title="Top Rated Movies" 
               movies={topRatedMovies}
+              onStreamClick={handleStreamClick}
             />
             
             <MovieSection 
               title="Upcoming Movies" 
               movies={upcomingMovies}
+              onStreamClick={handleStreamClick}
             />
           </div>
         </div>
       </main>
+
+      {isPlaying && selectedMovie && (
+        <VideoPlayer
+          movie={{
+            id: selectedMovie.id,
+            title: selectedMovie.title,
+            type: selectedMovie.type || 'movie'
+          }}
+          onClose={handleClosePlayer}
+        />
+      )}
     </div>
   );
 };
