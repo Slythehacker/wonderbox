@@ -1,24 +1,28 @@
 import React, { useState } from 'react';
 import Navbar from '@/components/Navbar';
 import MovieSection from '@/components/MovieSection';
-import { VideoPlayer } from '@/components/VideoPlayer';
+import { MovieDetails } from '@/components/MovieDetails';
 import { useMovieData } from '@/hooks/useMovieData';
 import { Movie } from '@/types/movie';
 import { Loader2 } from 'lucide-react';
 
 const Anime: React.FC = () => {
   const { topAnime, popularAnime, loading, error } = useMovieData();
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [showDetails, setShowDetails] = useState(false);
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
 
-  const handleStreamClick = (movie: Movie) => {
+  const handleAnimeClick = (movie: Movie) => {
     setSelectedMovie(movie);
-    setIsPlaying(true);
+    setShowDetails(true);
   };
 
-  const handleClosePlayer = () => {
-    setIsPlaying(false);
+  const handleCloseDetails = () => {
+    setShowDetails(false);
     setSelectedMovie(null);
+  };
+
+  const handleRelatedAnimeClick = (movie: Movie) => {
+    setSelectedMovie(movie);
   };
 
   if (loading) {
@@ -59,26 +63,49 @@ const Anime: React.FC = () => {
             <MovieSection 
               title="Top Anime" 
               movies={topAnime}
-              onStreamClick={handleStreamClick}
+              onStreamClick={handleAnimeClick}
             />
             
             <MovieSection 
               title="Popular Anime" 
               movies={popularAnime}
-              onStreamClick={handleStreamClick}
+              onStreamClick={handleAnimeClick}
+            />
+
+            <MovieSection 
+              title="Action Anime" 
+              movies={popularAnime.filter(m => m.genre.toLowerCase().includes('action'))}
+              onStreamClick={handleAnimeClick}
+            />
+
+            <MovieSection 
+              title="Romance Anime" 
+              movies={topAnime.filter(m => m.genre.toLowerCase().includes('romance'))}
+              onStreamClick={handleAnimeClick}
+            />
+
+            <MovieSection 
+              title="Comedy Anime" 
+              movies={popularAnime.filter(m => m.genre.toLowerCase().includes('comedy'))}
+              onStreamClick={handleAnimeClick}
+            />
+
+            <MovieSection 
+              title="Supernatural Anime" 
+              movies={topAnime.filter(m => m.genre.toLowerCase().includes('supernatural') || m.genre.toLowerCase().includes('fantasy'))}
+              onStreamClick={handleAnimeClick}
             />
           </div>
         </div>
       </main>
 
-      {isPlaying && selectedMovie && (
-        <VideoPlayer
-          movie={{
-            id: selectedMovie.id,
-            title: selectedMovie.title,
-            type: selectedMovie.type || 'anime'
-          }}
-          onClose={handleClosePlayer}
+      {showDetails && selectedMovie && (
+        <MovieDetails
+          movie={selectedMovie}
+          relatedMovies={popularAnime.filter(m => m.id !== selectedMovie.id && 
+            (m.genre === selectedMovie.genre || m.year === selectedMovie.year))}
+          onClose={handleCloseDetails}
+          onRelatedMovieClick={handleRelatedAnimeClick}
         />
       )}
     </div>

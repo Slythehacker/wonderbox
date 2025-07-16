@@ -1,24 +1,28 @@
 import React, { useState } from 'react';
 import Navbar from '@/components/Navbar';
 import MovieSection from '@/components/MovieSection';
-import { VideoPlayer } from '@/components/VideoPlayer';
+import { MovieDetails } from '@/components/MovieDetails';
 import { useMovieData } from '@/hooks/useMovieData';
 import { Movie } from '@/types/movie';
 import { Loader2 } from 'lucide-react';
 
 const Movies: React.FC = () => {
   const { movies, trendingMovies, topRatedMovies, upcomingMovies, loading, error } = useMovieData();
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [showDetails, setShowDetails] = useState(false);
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
 
-  const handleStreamClick = (movie: Movie) => {
+  const handleMovieClick = (movie: Movie) => {
     setSelectedMovie(movie);
-    setIsPlaying(true);
+    setShowDetails(true);
   };
 
-  const handleClosePlayer = () => {
-    setIsPlaying(false);
+  const handleCloseDetails = () => {
+    setShowDetails(false);
     setSelectedMovie(null);
+  };
+
+  const handleRelatedMovieClick = (movie: Movie) => {
+    setSelectedMovie(movie);
   };
 
   if (loading) {
@@ -59,38 +63,55 @@ const Movies: React.FC = () => {
             <MovieSection 
               title="Popular Movies" 
               movies={movies}
-              onStreamClick={handleStreamClick}
+              onStreamClick={handleMovieClick}
             />
             
             <MovieSection 
               title="Now Playing" 
               movies={trendingMovies}
-              onStreamClick={handleStreamClick}
+              onStreamClick={handleMovieClick}
             />
             
             <MovieSection 
               title="Top Rated Movies" 
               movies={topRatedMovies}
-              onStreamClick={handleStreamClick}
+              onStreamClick={handleMovieClick}
             />
             
             <MovieSection 
               title="Upcoming Movies" 
               movies={upcomingMovies}
-              onStreamClick={handleStreamClick}
+              onStreamClick={handleMovieClick}
+            />
+
+            <MovieSection 
+              title="Action Movies" 
+              movies={movies.filter(m => m.genre.toLowerCase().includes('action'))}
+              onStreamClick={handleMovieClick}
+            />
+
+            <MovieSection 
+              title="Comedy Movies" 
+              movies={movies.filter(m => m.genre.toLowerCase().includes('comedy'))}
+              onStreamClick={handleMovieClick}
+            />
+
+            <MovieSection 
+              title="Drama Movies" 
+              movies={movies.filter(m => m.genre.toLowerCase().includes('drama'))}
+              onStreamClick={handleMovieClick}
             />
           </div>
         </div>
       </main>
 
-      {isPlaying && selectedMovie && (
-        <VideoPlayer
-          movie={{
-            id: selectedMovie.id,
-            title: selectedMovie.title,
-            type: selectedMovie.type || 'movie'
-          }}
-          onClose={handleClosePlayer}
+      {showDetails && selectedMovie && (
+        <MovieDetails
+          movie={selectedMovie}
+          relatedMovies={movies.filter(m => m.id !== selectedMovie.id && 
+            (m.genre === selectedMovie.genre || m.year === selectedMovie.year))}
+          onClose={handleCloseDetails}
+          onRelatedMovieClick={handleRelatedMovieClick}
         />
       )}
     </div>

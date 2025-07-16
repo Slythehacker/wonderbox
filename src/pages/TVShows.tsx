@@ -1,24 +1,28 @@
 import React, { useState } from 'react';
 import Navbar from '@/components/Navbar';
 import MovieSection from '@/components/MovieSection';
-import { VideoPlayer } from '@/components/VideoPlayer';
+import { MovieDetails } from '@/components/MovieDetails';
 import { useMovieData } from '@/hooks/useMovieData';
 import { Movie } from '@/types/movie';
 import { Loader2 } from 'lucide-react';
 
 const TVShows: React.FC = () => {
   const { popularTvShows, topRatedTvShows, airingTodayTvShows, loading, error } = useMovieData();
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [showDetails, setShowDetails] = useState(false);
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
 
-  const handleStreamClick = (movie: Movie) => {
+  const handleTVShowClick = (movie: Movie) => {
     setSelectedMovie(movie);
-    setIsPlaying(true);
+    setShowDetails(true);
   };
 
-  const handleClosePlayer = () => {
-    setIsPlaying(false);
+  const handleCloseDetails = () => {
+    setShowDetails(false);
     setSelectedMovie(null);
+  };
+
+  const handleRelatedShowClick = (movie: Movie) => {
+    setSelectedMovie(movie);
   };
 
   if (loading) {
@@ -59,32 +63,55 @@ const TVShows: React.FC = () => {
             <MovieSection 
               title="Popular TV Shows" 
               movies={popularTvShows}
-              onStreamClick={handleStreamClick}
+              onStreamClick={handleTVShowClick}
             />
             
             <MovieSection 
               title="Top Rated TV Shows" 
               movies={topRatedTvShows}
-              onStreamClick={handleStreamClick}
+              onStreamClick={handleTVShowClick}
             />
             
             <MovieSection 
               title="Airing Today" 
               movies={airingTodayTvShows}
-              onStreamClick={handleStreamClick}
+              onStreamClick={handleTVShowClick}
+            />
+
+            <MovieSection 
+              title="Crime & Thriller Shows" 
+              movies={popularTvShows.filter(m => m.genre.toLowerCase().includes('crime') || m.genre.toLowerCase().includes('thriller'))}
+              onStreamClick={handleTVShowClick}
+            />
+
+            <MovieSection 
+              title="Comedy Series" 
+              movies={popularTvShows.filter(m => m.genre.toLowerCase().includes('comedy'))}
+              onStreamClick={handleTVShowClick}
+            />
+
+            <MovieSection 
+              title="Sci-Fi & Fantasy" 
+              movies={popularTvShows.filter(m => m.genre.toLowerCase().includes('sci-fi') || m.genre.toLowerCase().includes('fantasy'))}
+              onStreamClick={handleTVShowClick}
+            />
+
+            <MovieSection 
+              title="Documentary Series" 
+              movies={topRatedTvShows.filter(m => m.genre.toLowerCase().includes('documentary'))}
+              onStreamClick={handleTVShowClick}
             />
           </div>
         </div>
       </main>
 
-      {isPlaying && selectedMovie && (
-        <VideoPlayer
-          movie={{
-            id: selectedMovie.id,
-            title: selectedMovie.title,
-            type: selectedMovie.type || 'tv'
-          }}
-          onClose={handleClosePlayer}
+      {showDetails && selectedMovie && (
+        <MovieDetails
+          movie={selectedMovie}
+          relatedMovies={popularTvShows.filter(m => m.id !== selectedMovie.id && 
+            (m.genre === selectedMovie.genre || m.year === selectedMovie.year))}
+          onClose={handleCloseDetails}
+          onRelatedMovieClick={handleRelatedShowClick}
         />
       )}
     </div>
