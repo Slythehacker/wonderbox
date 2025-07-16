@@ -26,15 +26,16 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
     
     switch (type) {
       case 'movie':
-        return `https://vidsrc.icu/embed/movie/${id}`;
+      case 'movies':
+        return `https://vidsrc.net/embed/movie/${id}`;
       case 'anime':
-        // Default to dub=1 and skip=1 for anime
-        return `https://vidsrc.icu/embed/anime/${id}/${episode}/1/1`;
+        return `https://vidsrc.net/embed/movie/${id}`;
       case 'tv':
-        return `https://vidsrc.icu/embed/tv/${id}/${season}/${episode}`;
+      case 'tv_show':
+        return `https://vidsrc.net/embed/tv/${id}/${season}/${episode}`;
       default:
         // Default to movie if type is not specified
-        return `https://vidsrc.icu/embed/movie/${id}`;
+        return `https://vidsrc.net/embed/movie/${id}`;
     }
   };
 
@@ -94,7 +95,7 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
           <div className="space-y-3">
             <div className="text-sm">
               <span className="text-white/60">Source: </span>
-              <span className="text-white">vidsrc.icu</span>
+              <span className="text-white">vidsrc.net</span>
             </div>
             
             <div className="text-sm">
