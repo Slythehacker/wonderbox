@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
 import { useAuth } from '@/hooks/useAuth';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -151,12 +152,12 @@ const Watchlist: React.FC = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-      <main className="pt-20 pb-16">
-        <div className="container mx-auto px-6">
+      <main className="pt-20">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mb-8">
             <div className="flex items-center gap-3 mb-4">
-              <Heart className="h-8 w-8 text-red-500" />
-              <h1 className="text-4xl font-bold">My Watchlist</h1>
+              <Heart className="h-6 w-6 sm:h-8 sm:w-8 text-red-500" />
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold">My Watchlist</h1>
             </div>
             <p className="text-muted-foreground">
               Your saved movies, TV shows, and anime to watch later
@@ -179,14 +180,14 @@ const Watchlist: React.FC = () => {
               </CardContent>
             </Card>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-6">
               {watchlist.map((item) => (
                 <Card key={item.id} className="group overflow-hidden">
                   <div className="relative">
                     <img
                       src={item.movie_image_url || '/placeholder.svg'}
                       alt={item.movie_title}
-                      className="w-full h-64 object-cover transition-transform group-hover:scale-105"
+                      className="w-full h-48 sm:h-64 object-cover transition-transform group-hover:scale-105"
                       onError={(e) => {
                         const target = e.target as HTMLImageElement;
                         target.src = '/placeholder.svg';
@@ -233,6 +234,8 @@ const Watchlist: React.FC = () => {
           )}
         </div>
       </main>
+      
+      <Footer />
     </div>
   );
 };

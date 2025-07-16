@@ -119,23 +119,23 @@ const StreamingMovieCard = ({ movie, onStreamClick }: StreamingMovieCardProps) =
         />
         
         {/* Overlay with controls */}
-        <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-between p-4">
+        <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-between p-2 sm:p-4">
           {/* Top actions */}
           <div className="flex justify-between">
-            <Badge variant="secondary" className="bg-black/80 text-white border-none">
+            <Badge variant="secondary" className="bg-black/80 text-white border-none text-xs sm:text-sm">
               {movie.genre}
             </Badge>
             <Button
               variant="ghost"
               size="icon"
-              className="text-white hover:bg-white/20"
+              className="text-white hover:bg-white/20 h-6 w-6 sm:h-8 sm:w-8"
               onClick={handleWatchlistToggle}
               disabled={isLoading}
             >
               {isInWatchlist ? (
-                <Check className="h-5 w-5" />
+                <Check className="h-3 w-3 sm:h-4 sm:w-4" />
               ) : (
-                <Plus className="h-5 w-5" />
+                <Plus className="h-3 w-3 sm:h-4 sm:w-4" />
               )}
             </Button>
           </div>
@@ -143,11 +143,11 @@ const StreamingMovieCard = ({ movie, onStreamClick }: StreamingMovieCardProps) =
           {/* Center play button */}
           <div className="flex justify-center">
             <Button
-              size="lg"
-              className="rounded-full bg-primary/90 hover:bg-primary text-primary-foreground"
+              size="default"
+              className="rounded-full bg-primary/90 hover:bg-primary text-primary-foreground h-10 w-10 sm:h-12 sm:w-12"
               onClick={handleStreamClick}
             >
-              <Play className="h-6 w-6 ml-1" fill="currentColor" />
+              <Play className="h-4 w-4 sm:h-5 sm:w-5 ml-1" fill="currentColor" />
             </Button>
           </div>
 
@@ -156,25 +156,25 @@ const StreamingMovieCard = ({ movie, onStreamClick }: StreamingMovieCardProps) =
             <Button
               variant="ghost"
               size="sm"
-              className="text-white hover:bg-white/20"
+              className="text-white hover:bg-white/20 text-xs sm:text-sm p-1 sm:p-2"
               onClick={handleDownloadClick}
             >
-              <Download className="h-4 w-4 mr-2" />
-              Download
+              <Download className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
+              <span className="hidden sm:inline">Download</span>
             </Button>
             <div className="flex items-center space-x-1 text-white">
-              <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-              <span className="text-sm font-medium">{movie.rating}</span>
+              <Star className="h-3 w-3 sm:h-4 sm:w-4 fill-yellow-400 text-yellow-400" />
+              <span className="text-xs sm:text-sm font-medium">{movie.rating}</span>
             </div>
           </div>
         </div>
       </div>
 
-      <CardContent className="p-4">
-        <h3 className="font-semibold text-foreground mb-2 line-clamp-2 group-hover:text-primary transition-colors">
+      <CardContent className="p-3 sm:p-4">
+        <h3 className="font-semibold text-foreground mb-2 line-clamp-2 group-hover:text-primary transition-colors text-sm sm:text-base">
           {movie.title}
         </h3>
-        <div className="flex items-center justify-between text-sm text-muted-foreground">
+        <div className="flex items-center justify-between text-xs sm:text-sm text-muted-foreground">
           <span>{movie.year}</span>
           <span>{movie.duration}</span>
         </div>

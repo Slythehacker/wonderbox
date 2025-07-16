@@ -4,7 +4,7 @@ import heroImage from "@/assets/hero-cinema.jpg";
 
 const Hero = () => {
   return (
-    <section className="relative h-screen w-full overflow-hidden">
+    <section className="relative h-[60vh] sm:h-[80vh] lg:h-screen w-full overflow-hidden">
       {/* Background Image with Overlay */}
       <div className="absolute inset-0">
         <img
@@ -18,15 +18,15 @@ const Hero = () => {
 
       {/* Content */}
       <div className="relative z-10 h-full flex items-center">
-        <div className="container mx-auto px-6">
-          <div className="max-w-2xl space-y-6 animate-fade-in">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-2xl space-y-4 sm:space-y-6 animate-fade-in">
             {/* Badge */}
-            <div className="inline-flex items-center px-3 py-1 rounded-full bg-primary/20 text-primary text-sm font-medium border border-primary/30">
+            <div className="inline-flex items-center px-2 py-1 sm:px-3 sm:py-1 rounded-full bg-primary/20 text-primary text-xs sm:text-sm font-medium border border-primary/30">
               ✨ Featured Movie
             </div>
 
             {/* Title */}
-            <h1 className="text-5xl md:text-7xl font-bold leading-tight">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold leading-tight">
               Welcome to{" "}
               <span className="bg-gradient-primary bg-clip-text text-transparent">
                 Wonderbox
@@ -34,13 +34,13 @@ const Hero = () => {
             </h1>
 
             {/* Subtitle */}
-            <p className="text-lg md:text-xl text-muted-foreground leading-relaxed">
+            <p className="text-sm sm:text-base md:text-lg lg:text-xl text-muted-foreground leading-relaxed">
               Discover unlimited movies, TV shows, and anime. Stream anywhere, anytime. 
               Your entertainment universe awaits.
             </p>
 
             {/* Action Buttons */}
-            <div className="flex flex-wrap gap-4 pt-4">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-2 sm:pt-4">
               <Button 
                 size="lg" 
                 className="bg-gradient-primary hover:shadow-glow transition-all duration-300 animate-glow-pulse"
@@ -60,7 +60,7 @@ const Hero = () => {
             </div>
 
             {/* Stats */}
-            <div className="flex flex-wrap gap-8 pt-8 text-sm text-muted-foreground">
+            <div className="flex flex-wrap gap-4 sm:gap-6 lg:gap-8 pt-6 sm:pt-8 text-xs sm:text-sm text-muted-foreground">
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 bg-primary rounded-full animate-pulse" />
                 <span>10,000+ Movies</span>
@@ -79,7 +79,7 @@ const Hero = () => {
       </div>
 
       {/* Scroll Indicator */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+      <div className="hidden sm:block absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
         <div className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center">
           <div className="w-1 h-3 bg-white/60 rounded-full mt-2 animate-pulse" />
         </div>

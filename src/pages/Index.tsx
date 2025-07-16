@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import MovieSection from "@/components/MovieSection";
+import Footer from "@/components/Footer";
 import { useMovieData } from "@/hooks/useMovieData";
 import { useAuth } from "@/hooks/useAuth";
 import { Movie } from "@/types/movie";
@@ -60,7 +61,7 @@ const Index = () => {
       <Navbar />
       <Hero />
       
-      <div className="space-y-8 pb-16">
+      <div className="space-y-8 px-4 sm:px-6 lg:px-8">
         <MovieSection 
           title="Trending Movies" 
           movies={movies} 
@@ -82,6 +83,8 @@ const Index = () => {
           onStreamClick={handleStreamClick}
         />
       </div>
+      
+      <Footer />
     </div>
   );
 };

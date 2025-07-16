@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Navbar from '@/components/Navbar';
 import MovieSection from '@/components/MovieSection';
 import { MovieDetails } from '@/components/MovieDetails';
+import Footer from '@/components/Footer';
 import { useMovieData } from '@/hooks/useMovieData';
 import { Movie } from '@/types/movie';
 import { Loader2 } from 'lucide-react';
@@ -50,8 +51,8 @@ const Movies: React.FC = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-      <main className="pt-20 pb-16">
-        <div className="container mx-auto px-6">
+      <main className="pt-20">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mb-8">
             <h1 className="text-4xl font-bold mb-4">Movies</h1>
             <p className="text-muted-foreground">
@@ -114,6 +115,8 @@ const Movies: React.FC = () => {
           onRelatedMovieClick={handleRelatedMovieClick}
         />
       )}
+      
+      <Footer />
     </div>
   );
 };
