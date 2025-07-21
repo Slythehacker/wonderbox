@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { VideoPlayer } from '@/components/VideoPlayer';
+import { NetflixVideoPlayer } from '@/components/NetflixVideoPlayer';
 import { EpisodeSelector } from '@/components/EpisodeSelector';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -71,7 +71,7 @@ export const Streaming: React.FC = () => {
   return (
     <div className="min-h-screen bg-background">
       {isPlaying && (
-        <VideoPlayer
+        <NetflixVideoPlayer
           movie={movieWithType}
           season={currentSeason}
           episode={currentEpisode}

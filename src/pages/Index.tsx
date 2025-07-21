@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "@/components/Navbar";
-import Hero from "@/components/Hero";
-import MovieSection from "@/components/MovieSection";
+import NetflixHero from "@/components/NetflixHero";
+import NetflixCarousel from "@/components/NetflixCarousel";
 import Footer from "@/components/Footer";
 import { useMovieData } from "@/hooks/useMovieData";
 import { useAuth } from "@/hooks/useAuth";
@@ -57,30 +57,53 @@ const Index = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-black">
       <Navbar />
-      <Hero />
+      <NetflixHero 
+        onPlayClick={() => movies.length > 0 && handleStreamClick(movies[0])}
+        onInfoClick={() => console.log('More info clicked')}
+      />
       
-      <div className="space-y-8 px-4 sm:px-6 lg:px-8">
-        <MovieSection 
-          title="Trending Movies" 
-          movies={movies} 
-          onStreamClick={handleStreamClick}
+      <div className="space-y-8 -mt-32 relative z-10">
+        <NetflixCarousel 
+          title="Trending Now" 
+          items={movies.map(movie => ({
+            ...movie,
+            year: movie.year || "2024",
+            genre: movie.genre || "Action",
+            imageUrl: movie.imageUrl || "/placeholder.svg",
+          }))}
+          onItemClick={handleStreamClick}
         />
-        <MovieSection 
+        <NetflixCarousel 
           title="Popular TV Shows" 
-          movies={tvShows} 
-          onStreamClick={handleStreamClick}
+          items={tvShows.map(show => ({
+            ...show,
+            year: show.year || "2024",
+            genre: show.genre || "Drama",
+            imageUrl: show.imageUrl || "/placeholder.svg",
+          }))}
+          onItemClick={handleStreamClick}
         />
-        <MovieSection 
-          title="Top Anime" 
-          movies={anime} 
-          onStreamClick={handleStreamClick}
+        <NetflixCarousel 
+          title="Anime Collection" 
+          items={anime.map(item => ({
+            ...item,
+            year: item.year || "2024",
+            genre: item.genre || "Anime",
+            imageUrl: item.imageUrl || "/placeholder.svg",
+          }))}
+          onItemClick={handleStreamClick}
         />
-        <MovieSection 
-          title="Mixed Content" 
-          movies={[...movies.slice(0, 3), ...tvShows.slice(0, 3), ...anime.slice(0, 3)]} 
-          onStreamClick={handleStreamClick}
+        <NetflixCarousel 
+          title="Because you watched..." 
+          items={[...movies.slice(0, 8), ...tvShows.slice(0, 8)].map(item => ({
+            ...item,
+            year: item.year || "2024",
+            genre: item.genre || "Mixed",
+            imageUrl: item.imageUrl || "/placeholder.svg",
+          }))}
+          onItemClick={handleStreamClick}
         />
       </div>
       
