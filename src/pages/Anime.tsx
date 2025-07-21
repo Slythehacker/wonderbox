@@ -61,41 +61,65 @@ const Anime: React.FC = () => {
           </div>
           
           <div className="space-y-8">
-            <MovieSection 
-              title="Top Anime" 
-              movies={topAnime}
-              onStreamClick={handleAnimeClick}
-            />
+            {topAnime.length > 0 && (
+              <MovieSection 
+                title="Top Anime" 
+                movies={topAnime}
+                onStreamClick={handleAnimeClick}
+              />
+            )}
             
-            <MovieSection 
-              title="Popular Anime" 
-              movies={popularAnime}
-              onStreamClick={handleAnimeClick}
-            />
+            {popularAnime.length > 0 && (
+              <MovieSection 
+                title="Popular Anime" 
+                movies={popularAnime}
+                onStreamClick={handleAnimeClick}
+              />
+            )}
 
-            <MovieSection 
-              title="Action Anime" 
-              movies={popularAnime.filter(m => m.genre.toLowerCase().includes('action'))}
-              onStreamClick={handleAnimeClick}
-            />
+            {(() => {
+              const actionAnime = popularAnime.filter(m => m.genre.toLowerCase().includes('action'));
+              return actionAnime.length > 0 && (
+                <MovieSection 
+                  title="Action Anime" 
+                  movies={actionAnime}
+                  onStreamClick={handleAnimeClick}
+                />
+              );
+            })()}
 
-            <MovieSection 
-              title="Romance Anime" 
-              movies={topAnime.filter(m => m.genre.toLowerCase().includes('romance'))}
-              onStreamClick={handleAnimeClick}
-            />
+            {(() => {
+              const romanceAnime = topAnime.filter(m => m.genre.toLowerCase().includes('romance'));
+              return romanceAnime.length > 0 && (
+                <MovieSection 
+                  title="Romance Anime" 
+                  movies={romanceAnime}
+                  onStreamClick={handleAnimeClick}
+                />
+              );
+            })()}
 
-            <MovieSection 
-              title="Comedy Anime" 
-              movies={popularAnime.filter(m => m.genre.toLowerCase().includes('comedy'))}
-              onStreamClick={handleAnimeClick}
-            />
+            {(() => {
+              const comedyAnime = popularAnime.filter(m => m.genre.toLowerCase().includes('comedy'));
+              return comedyAnime.length > 0 && (
+                <MovieSection 
+                  title="Comedy Anime" 
+                  movies={comedyAnime}
+                  onStreamClick={handleAnimeClick}
+                />
+              );
+            })()}
 
-            <MovieSection 
-              title="Supernatural Anime" 
-              movies={topAnime.filter(m => m.genre.toLowerCase().includes('supernatural') || m.genre.toLowerCase().includes('fantasy'))}
-              onStreamClick={handleAnimeClick}
-            />
+            {(() => {
+              const supernaturalAnime = topAnime.filter(m => m.genre.toLowerCase().includes('supernatural') || m.genre.toLowerCase().includes('fantasy'));
+              return supernaturalAnime.length > 0 && (
+                <MovieSection 
+                  title="Supernatural Anime" 
+                  movies={supernaturalAnime}
+                  onStreamClick={handleAnimeClick}
+                />
+              );
+            })()}
           </div>
         </div>
       </main>

@@ -61,47 +61,70 @@ const Movies: React.FC = () => {
           </div>
           
           <div className="space-y-8">
-            <MovieSection 
-              title="Popular Movies" 
-              movies={movies}
-              onStreamClick={handleMovieClick}
-            />
+            {movies.length > 0 && (
+              <MovieSection 
+                title="Popular Movies" 
+                movies={movies}
+                onStreamClick={handleMovieClick}
+              />
+            )}
             
-            <MovieSection 
-              title="Now Playing" 
-              movies={trendingMovies}
-              onStreamClick={handleMovieClick}
-            />
+            {trendingMovies.length > 0 && (
+              <MovieSection 
+                title="Now Playing" 
+                movies={trendingMovies}
+                onStreamClick={handleMovieClick}
+              />
+            )}
             
-            <MovieSection 
-              title="Top Rated Movies" 
-              movies={topRatedMovies}
-              onStreamClick={handleMovieClick}
-            />
+            {topRatedMovies.length > 0 && (
+              <MovieSection 
+                title="Top Rated Movies" 
+                movies={topRatedMovies}
+                onStreamClick={handleMovieClick}
+              />
+            )}
             
-            <MovieSection 
-              title="Upcoming Movies" 
-              movies={upcomingMovies}
-              onStreamClick={handleMovieClick}
-            />
+            {upcomingMovies.length > 0 && (
+              <MovieSection 
+                title="Upcoming Movies" 
+                movies={upcomingMovies}
+                onStreamClick={handleMovieClick}
+              />
+            )}
 
-            <MovieSection 
-              title="Action Movies" 
-              movies={movies.filter(m => m.genre.toLowerCase().includes('action'))}
-              onStreamClick={handleMovieClick}
-            />
+            {(() => {
+              const actionMovies = movies.filter(m => m.genre.toLowerCase().includes('action'));
+              return actionMovies.length > 0 && (
+                <MovieSection 
+                  title="Action Movies" 
+                  movies={actionMovies}
+                  onStreamClick={handleMovieClick}
+                />
+              );
+            })()}
 
-            <MovieSection 
-              title="Comedy Movies" 
-              movies={movies.filter(m => m.genre.toLowerCase().includes('comedy'))}
-              onStreamClick={handleMovieClick}
-            />
+            {(() => {
+              const comedyMovies = movies.filter(m => m.genre.toLowerCase().includes('comedy'));
+              return comedyMovies.length > 0 && (
+                <MovieSection 
+                  title="Comedy Movies" 
+                  movies={comedyMovies}
+                  onStreamClick={handleMovieClick}
+                />
+              );
+            })()}
 
-            <MovieSection 
-              title="Drama Movies" 
-              movies={movies.filter(m => m.genre.toLowerCase().includes('drama'))}
-              onStreamClick={handleMovieClick}
-            />
+            {(() => {
+              const dramaMovies = movies.filter(m => m.genre.toLowerCase().includes('drama'));
+              return dramaMovies.length > 0 && (
+                <MovieSection 
+                  title="Drama Movies" 
+                  movies={dramaMovies}
+                  onStreamClick={handleMovieClick}
+                />
+              );
+            })()}
           </div>
         </div>
       </main>

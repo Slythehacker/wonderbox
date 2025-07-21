@@ -61,47 +61,73 @@ const TVShows: React.FC = () => {
           </div>
           
           <div className="space-y-8">
-            <MovieSection 
-              title="Popular TV Shows" 
-              movies={popularTvShows}
-              onStreamClick={handleTVShowClick}
-            />
+            {popularTvShows.length > 0 && (
+              <MovieSection 
+                title="Popular TV Shows" 
+                movies={popularTvShows}
+                onStreamClick={handleTVShowClick}
+              />
+            )}
             
-            <MovieSection 
-              title="Top Rated TV Shows" 
-              movies={topRatedTvShows}
-              onStreamClick={handleTVShowClick}
-            />
+            {topRatedTvShows.length > 0 && (
+              <MovieSection 
+                title="Top Rated TV Shows" 
+                movies={topRatedTvShows}
+                onStreamClick={handleTVShowClick}
+              />
+            )}
             
-            <MovieSection 
-              title="Airing Today" 
-              movies={airingTodayTvShows}
-              onStreamClick={handleTVShowClick}
-            />
+            {airingTodayTvShows.length > 0 && (
+              <MovieSection 
+                title="Airing Today" 
+                movies={airingTodayTvShows}
+                onStreamClick={handleTVShowClick}
+              />
+            )}
 
-            <MovieSection 
-              title="Crime & Thriller Shows" 
-              movies={popularTvShows.filter(m => m.genre.toLowerCase().includes('crime') || m.genre.toLowerCase().includes('thriller'))}
-              onStreamClick={handleTVShowClick}
-            />
+            {(() => {
+              const crimeShows = popularTvShows.filter(m => m.genre.toLowerCase().includes('crime') || m.genre.toLowerCase().includes('thriller'));
+              return crimeShows.length > 0 && (
+                <MovieSection 
+                  title="Crime & Thriller Shows" 
+                  movies={crimeShows}
+                  onStreamClick={handleTVShowClick}
+                />
+              );
+            })()}
 
-            <MovieSection 
-              title="Comedy Series" 
-              movies={popularTvShows.filter(m => m.genre.toLowerCase().includes('comedy'))}
-              onStreamClick={handleTVShowClick}
-            />
+            {(() => {
+              const comedyShows = popularTvShows.filter(m => m.genre.toLowerCase().includes('comedy'));
+              return comedyShows.length > 0 && (
+                <MovieSection 
+                  title="Comedy Series" 
+                  movies={comedyShows}
+                  onStreamClick={handleTVShowClick}
+                />
+              );
+            })()}
 
-            <MovieSection 
-              title="Sci-Fi & Fantasy" 
-              movies={popularTvShows.filter(m => m.genre.toLowerCase().includes('sci-fi') || m.genre.toLowerCase().includes('fantasy'))}
-              onStreamClick={handleTVShowClick}
-            />
+            {(() => {
+              const scifiShows = popularTvShows.filter(m => m.genre.toLowerCase().includes('sci-fi') || m.genre.toLowerCase().includes('fantasy'));
+              return scifiShows.length > 0 && (
+                <MovieSection 
+                  title="Sci-Fi & Fantasy" 
+                  movies={scifiShows}
+                  onStreamClick={handleTVShowClick}
+                />
+              );
+            })()}
 
-            <MovieSection 
-              title="Documentary Series" 
-              movies={topRatedTvShows.filter(m => m.genre.toLowerCase().includes('documentary'))}
-              onStreamClick={handleTVShowClick}
-            />
+            {(() => {
+              const docShows = topRatedTvShows.filter(m => m.genre.toLowerCase().includes('documentary'));
+              return docShows.length > 0 && (
+                <MovieSection 
+                  title="Documentary Series" 
+                  movies={docShows}
+                  onStreamClick={handleTVShowClick}
+                />
+              );
+            })()}
           </div>
         </div>
       </main>
