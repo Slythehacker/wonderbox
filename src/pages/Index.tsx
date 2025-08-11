@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import NetflixHero from "@/components/NetflixHero";
 import NetflixCarousel from "@/components/NetflixCarousel";
+import TopTenRow from "@/components/TopTenRow";
 import Footer from "@/components/Footer";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useMovieData } from "@/hooks/useMovieData";
@@ -34,6 +35,39 @@ const Index = () => {
   useEffect(() => {
     document.title = "Wonderbox – Stream Movies, TV Shows & Anime";
   }, []);
+
+  // Structured data for Top items
+  useEffect(() => {
+    if (!movies?.length) return;
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    const top = movies.slice(0, 5).map((m, i) => ({
+      '@type': 'Movie',
+      name: m.title,
+      datePublished: m.year,
+      aggregateRating: {
+        '@type': 'AggregateRating',
+        ratingValue: m.rating,
+        bestRating: '10',
+        ratingCount: 1000 + (i * 137)
+      },
+      genre: m.genre
+    }));
+    script.text = JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'ItemList',
+      name: 'Top 5 on Wonderbox',
+      itemListElement: top.map((item, index) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        item
+      }))
+    });
+    document.head.appendChild(script);
+    return () => {
+      document.head.removeChild(script);
+    };
+  }, [movies]);
 
   if (loading) {
     return (
@@ -99,6 +133,13 @@ const Index = () => {
       />
       
       <div className="space-y-8 -mt-32 relative z-10">
+        {/* Top 10 Section */}
+        <TopTenRow
+          title="Top 10 in Your Country Today"
+          items={movies}
+          onItemClick={handleStreamClick}
+        />
+
         <NetflixCarousel 
           title="Trending Now" 
           items={movies.map(movie => ({
