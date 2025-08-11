@@ -35,8 +35,8 @@ export const useSearch = (): UseSearchReturn => {
         body: { type: 'search', category: 'tv', query: query.trim() }
       });
 
-      const movieResults = moviesResponse.data?.results || [];
-      const tvResults = tvResponse.data?.results || [];
+      const movieResults = (moviesResponse.data?.results || []).map((m: Movie) => ({ ...m, type: 'movie' as const }));
+      const tvResults = (tvResponse.data?.results || []).map((t: Movie) => ({ ...t, type: 'tv' as const }));
       
       setSearchResults([...movieResults, ...tvResults]);
     } catch (err) {

@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { NetflixVideoPlayer } from '@/components/NetflixVideoPlayer';
 import { EpisodeSelector } from '@/components/EpisodeSelector';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
 import { ArrowLeft, Play } from 'lucide-react';
 import { useMovieData } from '@/hooks/useMovieData';
 
@@ -14,7 +15,7 @@ export const Streaming: React.FC = () => {
   const [currentEpisode, setCurrentEpisode] = useState(1);
   const [isPlaying, setIsPlaying] = useState(false);
   
-  const { movies, tvShows, anime } = useMovieData();
+  const { movies, tvShows, anime, loading } = useMovieData();
   
   // Find the movie based on type and id
   const getContent = () => {
@@ -31,7 +32,42 @@ export const Streaming: React.FC = () => {
   };
   
   const content = getContent();
-  
+
+  // SEO
+  useEffect(() => {
+    document.title = content ? `${content.title} – Watch on Wonderbox` : 'Streaming – Wonderbox';
+  }, [content]);
+
+  // Loading skeleton
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background">
+        <div className="container mx-auto px-6 py-8">
+          <Skeleton className="h-10 w-32 mb-6" />
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="lg:col-span-2">
+              <Skeleton className="w-full h-64 rounded-lg mb-6" />
+              <Skeleton className="h-8 w-2/3 mb-3" />
+              <div className="flex items-center gap-4">
+                <Skeleton className="h-4 w-12" />
+                <Skeleton className="h-4 w-12" />
+                <Skeleton className="h-4 w-12" />
+                <Skeleton className="h-4 w-12" />
+              </div>
+            </div>
+            <div className="lg:col-span-1">
+              <Skeleton className="h-6 w-24 mb-4" />
+              <div className="space-y-2">
+                {Array.from({ length: 6 }).map((_, i) => (
+                  <Skeleton key={i} className="h-10 w-full" />
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
   if (!content) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">

@@ -4,6 +4,7 @@ import Navbar from "@/components/Navbar";
 import NetflixHero from "@/components/NetflixHero";
 import NetflixCarousel from "@/components/NetflixCarousel";
 import Footer from "@/components/Footer";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useMovieData } from "@/hooks/useMovieData";
 import { useAuth } from "@/hooks/useAuth";
 import { Movie } from "@/types/movie";
@@ -29,13 +30,46 @@ const Index = () => {
     }
   }, [user, navigate]);
 
+  // SEO: set page title
+  useEffect(() => {
+    document.title = "Wonderbox – Stream Movies, TV Shows & Anime";
+  }, []);
+
   if (loading) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-muted-foreground">Loading amazing content...</p>
+      <div className="min-h-screen bg-black">
+        <Navbar />
+        {/* Hero skeleton */}
+        <section className="relative h-[70vh] w-full overflow-hidden">
+          <Skeleton className="absolute inset-0 rounded-none" />
+          <div className="relative z-10 h-full flex items-center">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8 space-y-4 max-w-2xl">
+              <Skeleton className="h-6 w-28" />
+              <Skeleton className="h-12 w-80" />
+              <Skeleton className="h-5 w-[32rem]" />
+              <div className="flex gap-3 pt-2">
+                <Skeleton className="h-12 w-32" />
+                <Skeleton className="h-12 w-36" />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Rows skeleton */}
+        <div className="space-y-8 -mt-24 relative z-10 px-4 sm:px-6 lg:px-8 pb-12">
+          {Array.from({ length: 3 }).map((_, rowIdx) => (
+            <div key={rowIdx}>
+              <Skeleton className="h-6 w-48 mb-3" />
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2">
+                {Array.from({ length: 6 }).map((_, i) => (
+                  <Skeleton key={i} className="h-40 w-full rounded-md" />
+                ))}
+              </div>
+            </div>
+          ))}
         </div>
+
+        <Footer />
       </div>
     );
   }

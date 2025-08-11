@@ -122,12 +122,21 @@ const Navbar = () => {
                     ) : searchResults.length > 0 ? (
                       <div className="p-2 space-y-2">
                         {searchResults.slice(0, 8).map((movie) => (
-                          <div key={movie.id} className="p-2 hover:bg-muted/50 rounded cursor-pointer" onClick={() => setShowSearchResults(false)}>
+                          <div 
+                            key={movie.id} 
+                            className="p-2 hover:bg-muted/50 rounded cursor-pointer" 
+                            onClick={() => {
+                              setShowSearchResults(false);
+                              const contentType = movie.type || 'movie';
+                              navigate(`/streaming/${contentType}/${movie.id}`);
+                            }}
+                          >
                             <div className="flex items-center space-x-3">
                               <img 
                                 src={movie.imageUrl} 
-                                alt={movie.title}
+                                alt={`${movie.title} poster`} 
                                 className="w-12 h-16 object-cover rounded"
+                                loading="lazy"
                               />
                               <div>
                                 <h4 className="font-medium text-sm">{movie.title}</h4>
