@@ -14,6 +14,112 @@ export type Database = {
   }
   public: {
     Tables: {
+      playback_events: {
+        Row: {
+          created_at: string | null
+          event_data: Json | null
+          event_type: string | null
+          id: number
+          session_id: number | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          event_data?: Json | null
+          event_type?: string | null
+          id?: never
+          session_id?: number | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          event_data?: Json | null
+          event_type?: string | null
+          id?: never
+          session_id?: number | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "playback_events_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "playback_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      playback_qoe: {
+        Row: {
+          additional_metrics: Json | null
+          bitrate: number | null
+          buffering_events: number | null
+          created_at: string | null
+          id: number
+          latency: number | null
+          session_id: number | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          additional_metrics?: Json | null
+          bitrate?: number | null
+          buffering_events?: number | null
+          created_at?: string | null
+          id?: never
+          latency?: number | null
+          session_id?: number | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          additional_metrics?: Json | null
+          bitrate?: number | null
+          buffering_events?: number | null
+          created_at?: string | null
+          id?: never
+          latency?: number | null
+          session_id?: number | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "playback_qoe_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "playback_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      playback_sessions: {
+        Row: {
+          created_at: string | null
+          id: number
+          session_data: Json | null
+          status: string | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: never
+          session_data?: Json | null
+          status?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: never
+          session_data?: Json | null
+          status?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
