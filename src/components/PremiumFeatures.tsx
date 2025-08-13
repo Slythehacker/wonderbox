@@ -24,7 +24,7 @@ interface PremiumFeaturesProps {
 }
 
 const PremiumFeatures: React.FC<PremiumFeaturesProps> = ({ userTier, onUpgrade }) => {
-  const [downloadQuality, setDownloadQuality] = useState(['1080p']);
+  const [downloadQuality, setDownloadQuality] = useState('1080p');
   const [simultaneousStreams, setSimultaneousStreams] = useState([2]);
   const [adFreeEnabled, setAdFreeEnabled] = useState(true);
   const [offlineMode, setOfflineMode] = useState(true);
@@ -122,7 +122,7 @@ const PremiumFeatures: React.FC<PremiumFeaturesProps> = ({ userTier, onUpgrade }
                   value={downloadQuality === '4K' ? [3] : downloadQuality === '1080p' ? [2] : [1]}
                   onValueChange={(value) => {
                     const quality = value[0] === 3 ? '4K' : value[0] === 2 ? '1080p' : '720p';
-                    setDownloadQuality([quality]);
+                    setDownloadQuality(quality);
                   }}
                   max={userTier === 'vip' ? 3 : 2}
                   min={1}
@@ -133,8 +133,8 @@ const PremiumFeatures: React.FC<PremiumFeaturesProps> = ({ userTier, onUpgrade }
                   {userTier === 'vip' ? '4K' : '1080p'}
                 </span>
               </div>
-              <p className="text-xs text-muted-foreground">
-                Current: {downloadQuality[0]}
+               <p className="text-xs text-muted-foreground">
+                Current: {downloadQuality}
               </p>
             </div>
 

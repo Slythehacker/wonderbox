@@ -3,10 +3,10 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import SocialFeed from '@/components/SocialFeed';
 import PremiumFeatures from '@/components/PremiumFeatures';
-import AdvancedAnalytics from '@/components/AdvancedAnalytics';
+// import AdvancedAnalytics from '@/components/AdvancedAnalytics';
 import GlobalCDN from '@/components/GlobalCDN';
 import { useAuth } from '@/hooks/useAuth';
-import { useRecommendations } from '@/hooks/useRecommendations';
+// import { useRecommendations } from '@/hooks/useRecommendations';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
@@ -26,7 +26,9 @@ import {
 
 const Dashboard: React.FC = () => {
   const { user } = useAuth();
-  const { recommendations, loading: recommendationsLoading } = useRecommendations();
+  // Mock data for now
+  const recommendations: any[] = [];
+  const recommendationsLoading = false;
   const [userTier, setUserTier] = useState<'free' | 'premium' | 'vip'>('free');
 
   const handleUpgrade = (tier: 'premium' | 'vip') => {
@@ -224,7 +226,15 @@ const Dashboard: React.FC = () => {
             </TabsContent>
 
             <TabsContent value="analytics">
-              <AdvancedAnalytics />
+              <Card>
+                <CardContent className="text-center py-8">
+                  <BarChart3 className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                  <h3 className="text-lg font-semibold mb-2">Analytics Coming Soon</h3>
+                  <p className="text-muted-foreground">
+                    Advanced viewing analytics will be available once you start watching content
+                  </p>
+                </CardContent>
+              </Card>
             </TabsContent>
 
             <TabsContent value="network">

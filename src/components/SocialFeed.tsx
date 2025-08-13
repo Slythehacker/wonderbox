@@ -5,21 +5,21 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Textarea } from '@/components/ui/textarea';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { useSocialFeatures } from '@/hooks/useSocialFeatures';
+// import { useSocialFeatures } from '@/hooks/useSocialFeatures';
 import { Heart, MessageCircle, Share2, Star, Users, Play, UserPlus, UserMinus } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 
 const SocialFeed: React.FC = () => {
-  const { 
-    socialFeed, 
-    following, 
-    followers, 
-    followUser, 
-    unfollowUser, 
-    shareContent, 
-    createReview,
-    loading 
-  } = useSocialFeatures();
+  // Mock data for now
+  const socialFeed: any[] = [];
+  const following: any[] = [];
+  const followers: any[] = [];
+  const loading = false;
+  
+  const followUser = async (userId: string) => {};
+  const unfollowUser = async (userId: string) => {};
+  const shareContent = async (id: string, title: string, type: string, message: string) => {};
+  const createReview = async (id: string, title: string, type: string, rating: number, text: string) => {};
   
   const [shareDialogOpen, setShareDialogOpen] = useState(false);
   const [reviewDialogOpen, setReviewDialogOpen] = useState(false);
