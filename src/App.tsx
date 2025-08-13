@@ -12,6 +12,7 @@ import TVShows from "./pages/TVShows";
 import Anime from "./pages/Anime";
 import Profile from "./pages/Profile";
 import Watchlist from "./pages/Watchlist";
+import Dashboard from "./pages/Dashboard";
 
 const queryClient = new QueryClient();
 
@@ -29,6 +30,7 @@ const App = () => (
           <Route path="/anime" element={<Anime />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/watchlist" element={<Watchlist />} />
+          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/streaming/:type/:id" element={<Streaming />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
