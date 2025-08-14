@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import NetflixHero from "@/components/NetflixHero";
-import NetflixCarousel from "@/components/NetflixCarousel";
+import EnhancedCarousel from "@/components/EnhancedCarousel";
 import TopTenRow from "@/components/TopTenRow";
 import Footer from "@/components/Footer";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -125,24 +125,27 @@ const Index = () => {
   }
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-background">
       <Navbar />
       <NetflixHero 
         onPlayClick={() => movies.length > 0 && handleStreamClick(movies[0])}
         onInfoClick={() => console.log('More info clicked')}
       />
       
-      <div className="space-y-8 -mt-32 relative z-10">
+      <div className="space-y-12 -mt-32 relative z-10 pb-20">
         {/* Top 10 Section */}
         <TopTenRow
-          title="Top 10 in Your Country Today"
+          title="🔥 Top 10 in Your Country Today"
           items={movies}
           onItemClick={handleStreamClick}
         />
 
-        <NetflixCarousel 
+        <EnhancedCarousel 
           title="Trending Now" 
-          items={movies.map(movie => ({
+          subtitle="What everyone's watching right now"
+          featured={true}
+          cardSize="lg"
+          items={movies.slice(0, 12).map(movie => ({
             ...movie,
             year: movie.year || "2024",
             genre: movie.genre || "Action",
@@ -150,8 +153,10 @@ const Index = () => {
           }))}
           onItemClick={handleStreamClick}
         />
-        <NetflixCarousel 
+
+        <EnhancedCarousel 
           title="Popular TV Shows" 
+          subtitle="Binge-worthy series you can't stop watching"
           items={tvShows.map(show => ({
             ...show,
             year: show.year || "2024",
@@ -160,8 +165,10 @@ const Index = () => {
           }))}
           onItemClick={handleStreamClick}
         />
-        <NetflixCarousel 
+
+        <EnhancedCarousel 
           title="Anime Collection" 
+          subtitle="Epic adventures from Japan and beyond"
           items={anime.map(item => ({
             ...item,
             year: item.year || "2024",
@@ -170,8 +177,11 @@ const Index = () => {
           }))}
           onItemClick={handleStreamClick}
         />
-        <NetflixCarousel 
-          title="Because you watched..." 
+
+        <EnhancedCarousel 
+          title="Because You Watched..." 
+          subtitle="Personalized picks just for you"
+          cardSize="sm"
           items={[...movies.slice(0, 8), ...tvShows.slice(0, 8)].map(item => ({
             ...item,
             year: item.year || "2024",
@@ -180,6 +190,35 @@ const Index = () => {
           }))}
           onItemClick={handleStreamClick}
         />
+
+        {/* Genre Collections */}
+        {movies.filter(m => m.genre.toLowerCase().includes('action')).length > 0 && (
+          <EnhancedCarousel 
+            title="Action & Adventure" 
+            subtitle="Heart-pounding thrills and excitement"
+            items={movies.filter(m => m.genre.toLowerCase().includes('action')).map(movie => ({
+              ...movie,
+              year: movie.year || "2024",
+              genre: movie.genre || "Action",
+              imageUrl: movie.imageUrl || "/placeholder.svg",
+            }))}
+            onItemClick={handleStreamClick}
+          />
+        )}
+
+        {movies.filter(m => m.genre.toLowerCase().includes('comedy')).length > 0 && (
+          <EnhancedCarousel 
+            title="Comedy Central" 
+            subtitle="Laugh out loud with these hilarious picks"
+            items={movies.filter(m => m.genre.toLowerCase().includes('comedy')).map(movie => ({
+              ...movie,
+              year: movie.year || "2024",
+              genre: movie.genre || "Comedy",
+              imageUrl: movie.imageUrl || "/placeholder.svg",
+            }))}
+            onItemClick={handleStreamClick}
+          />
+        )}
       </div>
       
       <Footer />

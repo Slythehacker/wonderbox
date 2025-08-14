@@ -26,8 +26,10 @@ const Footer = () => {
   };
 
   return (
-    <footer className="bg-background/95 border-t border-border/50 mt-16">
-      <div className="container mx-auto px-6 py-12">
+    <footer className="bg-gradient-card border-t border-border/50 mt-20 relative overflow-hidden">
+      {/* Background decoration */}
+      <div className="absolute inset-0 bg-gradient-border opacity-20 blur-3xl"></div>
+      <div className="container mx-auto px-6 py-16 relative">
         {/* Main Footer Content */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Brand Section */}

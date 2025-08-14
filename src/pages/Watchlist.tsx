@@ -152,84 +152,149 @@ const Watchlist: React.FC = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-      <main className="pt-20">
+      
+      {/* Hero Section */}
+      <section className="pt-20 pb-12 bg-gradient-to-b from-background to-background/80">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-8">
-            <div className="flex items-center gap-3 mb-4">
-              <Heart className="h-6 w-6 sm:h-8 sm:w-8 text-red-500" />
-              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold">My Watchlist</h1>
+          <div className="text-center space-y-6 py-16">
+            <div className="flex items-center justify-center space-x-4">
+              <Heart className="h-12 w-12 text-red-500 animate-pulse" />
+              <h1 className="text-5xl md:text-6xl font-bold bg-gradient-primary bg-clip-text text-transparent">
+                My Watchlist
+              </h1>
             </div>
-            <p className="text-muted-foreground">
-              Your saved movies, TV shows, and anime to watch later
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+              Your personal collection of movies, TV shows, and anime saved for later. 
+              Never lose track of what you want to watch next.
             </p>
+            <div className="flex items-center justify-center space-x-8 pt-4">
+              <div className="text-center">
+                <div className="text-2xl font-bold text-primary">{watchlist.length}</div>
+                <div className="text-sm text-muted-foreground">Saved Items</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-primary">∞</div>
+                <div className="text-sm text-muted-foreground">Capacity</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-primary">24/7</div>
+                <div className="text-sm text-muted-foreground">Access</div>
+              </div>
+            </div>
           </div>
+        </div>
+      </section>
+
+      <main className="pb-20">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
 
           {watchlist.length === 0 ? (
-            <Card className="max-w-md mx-auto text-center">
-              <CardHeader>
-                <Heart className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-                <CardTitle>Your watchlist is empty</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground mb-4">
-                  Start adding movies, TV shows, and anime you want to watch later!
+            <div className="max-w-2xl mx-auto text-center">
+              <div className="bg-gradient-card border border-border/50 rounded-2xl p-12 shadow-elegant">
+                <Heart className="h-20 w-20 mx-auto text-muted-foreground mb-6 animate-pulse" />
+                <h2 className="text-3xl font-bold mb-4 text-foreground">Your watchlist is empty</h2>
+                <p className="text-muted-foreground text-lg mb-8 leading-relaxed">
+                  Start building your personal collection! Add movies, TV shows, and anime 
+                  you want to watch later. Your future self will thank you.
                 </p>
-                <Button onClick={() => navigate('/')}>
+                <Button 
+                  onClick={() => navigate('/')} 
+                  size="lg" 
+                  className="bg-gradient-primary hover:opacity-90 px-8 py-3"
+                >
+                  <Film className="w-5 h-5 mr-2" />
                   Browse Content
                 </Button>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           ) : (
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-6">
-              {watchlist.map((item) => (
-                <Card key={item.id} className="group overflow-hidden">
-                  <div className="relative">
-                    <img
-                      src={item.movie_image_url || '/placeholder.svg'}
-                      alt={item.movie_title}
-                      className="w-full h-48 sm:h-64 object-cover transition-transform group-hover:scale-105"
-                      onError={(e) => {
-                        const target = e.target as HTMLImageElement;
-                        target.src = '/placeholder.svg';
-                      }}
-                    />
-                    <div className="absolute top-2 right-2">
-                      <Badge className={getTypeColor(item.movie_type)}>
-                        {getTypeIcon(item.movie_type)}
-                        <span className="ml-1 capitalize">{item.movie_type}</span>
-                      </Badge>
+            <div className="space-y-8">
+              {/* Stats Section */}
+              <div className="bg-gradient-card border border-border/50 rounded-2xl p-6 shadow-soft">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <div className="text-center">
+                    <div className="text-3xl font-bold text-primary mb-2">
+                      {watchlist.filter(item => item.movie_type === 'movie').length}
                     </div>
-                    <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
-                      <Button
-                        size="sm"
-                        onClick={() => handleWatch(item)}
-                        className="bg-primary hover:bg-primary/90"
-                      >
-                        <Play className="w-4 h-4 mr-1" fill="currentColor" />
-                        Watch
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="destructive"
-                        onClick={() => removeFromWatchlist(item.id)}
-                        disabled={removing === item.id}
-                      >
-                        {removing === item.id ? (
-                          <Loader2 className="w-4 h-4 animate-spin" />
-                        ) : (
-                          <Trash2 className="w-4 h-4" />
-                        )}
-                      </Button>
+                    <div className="text-muted-foreground flex items-center justify-center space-x-2">
+                      <Film className="w-4 h-4" />
+                      <span>Movies</span>
                     </div>
                   </div>
-                  <CardContent className="p-4">
-                    <h3 className="font-semibold truncate mb-2">{item.movie_title}</h3>
-                    <p className="text-sm text-muted-foreground">
-                      Added {new Date(item.added_at).toLocaleDateString()}
-                    </p>
-                  </CardContent>
-                </Card>
-              ))}
+                  <div className="text-center">
+                    <div className="text-3xl font-bold text-primary mb-2">
+                      {watchlist.filter(item => item.movie_type === 'tv').length}
+                    </div>
+                    <div className="text-muted-foreground flex items-center justify-center space-x-2">
+                      <Tv className="w-4 h-4" />
+                      <span>TV Shows</span>
+                    </div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-3xl font-bold text-primary mb-2">
+                      {watchlist.filter(item => item.movie_type === 'anime').length}
+                    </div>
+                    <div className="text-muted-foreground flex items-center justify-center space-x-2">
+                      <Zap className="w-4 h-4" />
+                      <span>Anime</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Watchlist Grid */}
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
+                {watchlist.map((item) => (
+                  <Card key={item.id} className="group overflow-hidden bg-gradient-card border-border/50 hover:border-primary/30 transition-all duration-300 hover:shadow-elegant">
+                    <div className="relative">
+                      <img
+                        src={item.movie_image_url || '/placeholder.svg'}
+                        alt={item.movie_title}
+                        className="w-full h-48 sm:h-64 object-cover transition-transform duration-500 group-hover:scale-110"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.src = '/placeholder.svg';
+                        }}
+                      />
+                      <div className="absolute top-3 right-3">
+                        <Badge className={`${getTypeColor(item.movie_type)} backdrop-blur-sm`}>
+                          {getTypeIcon(item.movie_type)}
+                          <span className="ml-1 capitalize">{item.movie_type}</span>
+                        </Badge>
+                      </div>
+                      <div className="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center gap-3">
+                        <Button
+                          size="sm"
+                          onClick={() => handleWatch(item)}
+                          className="bg-white text-black hover:bg-white/90 shadow-glow"
+                        >
+                          <Play className="w-4 h-4 mr-1 fill-current" />
+                          Watch
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="destructive"
+                          onClick={() => removeFromWatchlist(item.id)}
+                          disabled={removing === item.id}
+                          className="shadow-lg"
+                        >
+                          {removing === item.id ? (
+                            <Loader2 className="w-4 h-4 animate-spin" />
+                          ) : (
+                            <Trash2 className="w-4 h-4" />
+                          )}
+                        </Button>
+                      </div>
+                    </div>
+                    <CardContent className="p-4">
+                      <h3 className="font-semibold text-foreground line-clamp-2 mb-2">{item.movie_title}</h3>
+                      <p className="text-xs text-muted-foreground">
+                        Added {new Date(item.added_at).toLocaleDateString()}
+                      </p>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
             </div>
           )}
         </div>

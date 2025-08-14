@@ -63,27 +63,55 @@ const Dashboard: React.FC = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-      <main className="pt-20">
+      
+      {/* Hero Header */}
+      <section className="pt-20 pb-8 bg-gradient-to-br from-background via-background to-card/50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Header */}
-          <div className="mb-8">
-            <div className="flex items-center justify-between">
-              <div>
-                <h1 className="text-3xl font-bold mb-2">
-                  Welcome back, {user.user_metadata?.full_name || 'User'}!
-                </h1>
-                <p className="text-muted-foreground">
-                  Your personalized streaming dashboard
-                </p>
-              </div>
-              <div className="flex items-center gap-2">
-                <Badge variant={userTier === 'free' ? 'secondary' : 'default'} className="capitalize">
-                  <Crown className="h-3 w-3 mr-1" />
-                  {userTier}
-                </Badge>
+          <div className="relative">
+            {/* Background decoration */}
+            <div className="absolute inset-0 bg-gradient-border opacity-30 blur-3xl"></div>
+            
+            <div className="relative bg-gradient-card border border-border/50 rounded-2xl p-8 shadow-elegant">
+              <div className="flex items-center justify-between">
+                <div className="space-y-4">
+                  <div className="flex items-center space-x-3">
+                    <div className="h-12 w-12 bg-gradient-primary rounded-full flex items-center justify-center">
+                      <span className="text-white font-bold text-lg">
+                        {(user.user_metadata?.full_name || 'User').charAt(0).toUpperCase()}
+                      </span>
+                    </div>
+                    <div>
+                      <h1 className="text-3xl md:text-4xl font-bold text-foreground">
+                        Welcome back, {user.user_metadata?.full_name || 'User'}!
+                      </h1>
+                      <p className="text-muted-foreground text-lg">
+                        Your personalized streaming dashboard
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="flex items-center gap-3">
+                  <Badge 
+                    variant={userTier === 'free' ? 'secondary' : 'default'} 
+                    className="capitalize px-4 py-2 text-sm font-semibold"
+                  >
+                    <Crown className="h-4 w-4 mr-2" />
+                    {userTier} Member
+                  </Badge>
+                  <Button variant="outline" size="sm">
+                    <Settings className="h-4 w-4 mr-2" />
+                    Settings
+                  </Button>
+                </div>
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      <main className="pb-20">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
 
           {/* Quick Stats */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
