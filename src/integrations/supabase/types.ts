@@ -14,6 +14,54 @@ export type Database = {
   }
   public: {
     Tables: {
+      movie_storage: {
+        Row: {
+          created_at: string
+          download_status: string | null
+          file_path: string | null
+          file_size: number | null
+          id: string
+          movie_id: string
+          movie_title: string
+          movie_type: string
+          poster_path: string | null
+          quality: string | null
+          thumbnail_path: string | null
+          trailer_path: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          download_status?: string | null
+          file_path?: string | null
+          file_size?: number | null
+          id?: string
+          movie_id: string
+          movie_title: string
+          movie_type?: string
+          poster_path?: string | null
+          quality?: string | null
+          thumbnail_path?: string | null
+          trailer_path?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          download_status?: string | null
+          file_path?: string | null
+          file_size?: number | null
+          id?: string
+          movie_id?: string
+          movie_title?: string
+          movie_type?: string
+          poster_path?: string | null
+          quality?: string | null
+          thumbnail_path?: string | null
+          trailer_path?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       playback_events: {
         Row: {
           created_at: string | null
@@ -147,6 +195,36 @@ export type Database = {
           id?: string
           subscription_tier?: string | null
           updated_at?: string
+        }
+        Relationships: []
+      }
+      user_downloads: {
+        Row: {
+          download_completed_at: string | null
+          download_requested_at: string
+          id: string
+          movie_id: string
+          quality_preference: string | null
+          status: string | null
+          user_id: string
+        }
+        Insert: {
+          download_completed_at?: string | null
+          download_requested_at?: string
+          id?: string
+          movie_id: string
+          quality_preference?: string | null
+          status?: string | null
+          user_id: string
+        }
+        Update: {
+          download_completed_at?: string | null
+          download_requested_at?: string
+          id?: string
+          movie_id?: string
+          quality_preference?: string | null
+          status?: string | null
+          user_id?: string
         }
         Relationships: []
       }

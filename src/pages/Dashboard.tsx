@@ -6,6 +6,8 @@ import PremiumFeatures from '@/components/PremiumFeatures';
 // import AdvancedAnalytics from '@/components/AdvancedAnalytics';
 import GlobalCDN from '@/components/GlobalCDN';
 import { AdminPanel } from '@/components/AdminPanel';
+import { AdvancedDashboard } from '@/components/AdvancedDashboard';
+import { MovieDownloadManager } from '@/components/MovieDownloadManager';
 import { useAuth } from '@/hooks/useAuth';
 import { useAdmin } from '@/hooks/useAdmin';
 // import { useRecommendations } from '@/hooks/useRecommendations';
@@ -23,7 +25,9 @@ import {
   Star,
   Play,
   Heart,
-  Download
+  Download,
+  HardDrive,
+  Upload
 } from 'lucide-react';
 
 const Dashboard: React.FC = () => {
@@ -68,44 +72,44 @@ const Dashboard: React.FC = () => {
       <Navbar />
       
       {/* Hero Header */}
-      <section className="pt-20 pb-8 bg-gradient-to-br from-background via-background to-card/50">
+      <section className="pt-20 pb-8 bg-gradient-to-br from-background via-background to-card/50 animate-fade-in">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="relative">
-            {/* Background decoration */}
-            <div className="absolute inset-0 bg-gradient-border opacity-30 blur-3xl"></div>
+            {/* Background decoration with animation */}
+            <div className="absolute inset-0 bg-gradient-border opacity-30 blur-3xl animate-glow-pulse"></div>
             
-            <div className="relative bg-gradient-card border border-border/50 rounded-2xl p-8 shadow-elegant">
+            <div className="relative bg-gradient-card border border-border/50 rounded-2xl p-8 shadow-elegant hover:shadow-glow transition-all duration-700 animate-scale-in">
               <div className="flex items-center justify-between">
                 <div className="space-y-4">
                   <div className="flex items-center space-x-3">
-                    <div className="h-12 w-12 bg-gradient-primary rounded-full flex items-center justify-center">
+                    <div className="h-12 w-12 bg-gradient-primary rounded-full flex items-center justify-center animate-float">
                       <span className="text-white font-bold text-lg">
                         {(user.user_metadata?.full_name || 'Big Sly').charAt(0).toUpperCase()}
                       </span>
                     </div>
                     <div>
-                      <h1 className="text-3xl md:text-4xl font-bold text-foreground">
+                      <h1 className="text-3xl md:text-4xl font-bold text-foreground animate-slide-down">
                         Welcome back, {user.user_metadata?.full_name || 'Big Sly'}!
                       </h1>
-                      <p className="text-muted-foreground text-lg">
+                      <p className="text-muted-foreground text-lg animate-slide-down" style={{ animationDelay: '200ms' }}>
                         Your personalized streaming dashboard
                       </p>
                     </div>
                   </div>
                 </div>
                 
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3 animate-slide-down" style={{ animationDelay: '400ms' }}>
                   <Badge 
                     variant={userTier === 'free' ? 'secondary' : 'default'} 
-                    className="capitalize px-4 py-2 text-sm font-semibold"
+                    className="capitalize px-4 py-2 text-sm font-semibold hover:scale-105 transition-transform"
                   >
                     <Crown className="h-4 w-4 mr-2" />
                     {userTier} Member
                   </Badge>
                   {isAdmin && (
-                    <Badge variant="destructive" className="text-xs">ADMIN</Badge>
+                    <Badge variant="destructive" className="text-xs animate-netflix-bounce">ADMIN</Badge>
                   )}
-                  <Button variant="outline" size="sm">
+                  <Button variant="outline" size="sm" className="hover:scale-105 transition-transform">
                     <Settings className="h-4 w-4 mr-2" />
                     Settings
                   </Button>
@@ -119,51 +123,51 @@ const Dashboard: React.FC = () => {
       <main className="pb-20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
 
-          {/* Quick Stats */}
+          {/* Quick Stats with Enhanced Animations */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-            <Card>
+            <Card className="bg-gradient-card border-border/50 hover:shadow-glow transition-all duration-300 hover:scale-[1.02] animate-slide-up">
               <CardContent className="flex items-center justify-between p-6">
                 <div>
                   <p className="text-sm text-muted-foreground">Watch Time</p>
-                  <p className="text-2xl font-bold">24.5h</p>
-                  <p className="text-xs text-green-500">+12% this week</p>
+                  <p className="text-2xl font-bold animate-scale-in">24.5h</p>
+                  <p className="text-xs text-green-500 animate-fade-in">+12% this week</p>
                 </div>
-                <Play className="h-8 w-8 text-blue-500" />
+                <Play className="h-8 w-8 text-blue-500 animate-float" />
               </CardContent>
             </Card>
             
-            <Card>
+            <Card className="bg-gradient-card border-border/50 hover:shadow-glow transition-all duration-300 hover:scale-[1.02] animate-slide-up" style={{ animationDelay: '100ms' }}>
               <CardContent className="flex items-center justify-between p-6">
                 <div>
                   <p className="text-sm text-muted-foreground">Watchlist</p>
-                  <p className="text-2xl font-bold">47</p>
-                  <p className="text-xs text-blue-500">3 added today</p>
+                  <p className="text-2xl font-bold animate-scale-in" style={{ animationDelay: '200ms' }}>47</p>
+                  <p className="text-xs text-blue-500 animate-fade-in" style={{ animationDelay: '300ms' }}>3 added today</p>
                 </div>
-                <Heart className="h-8 w-8 text-red-500" />
+                <Heart className="h-8 w-8 text-red-500 animate-float" style={{ animationDelay: '500ms' }} />
               </CardContent>
             </Card>
             
-            <Card>
+            <Card className="bg-gradient-card border-border/50 hover:shadow-glow transition-all duration-300 hover:scale-[1.02] animate-slide-up" style={{ animationDelay: '200ms' }}>
               <CardContent className="flex items-center justify-between p-6">
                 <div>
                   <p className="text-sm text-muted-foreground">Ratings Given</p>
-                  <p className="text-2xl font-bold">128</p>
-                  <p className="text-xs text-yellow-500">Avg: 4.2/5</p>
+                  <p className="text-2xl font-bold animate-scale-in" style={{ animationDelay: '400ms' }}>128</p>
+                  <p className="text-xs text-yellow-500 animate-fade-in" style={{ animationDelay: '500ms' }}>Avg: 4.2/5</p>
                 </div>
-                <Star className="h-8 w-8 text-yellow-500" />
+                <Star className="h-8 w-8 text-yellow-500 animate-float" style={{ animationDelay: '1000ms' }} />
               </CardContent>
             </Card>
             
-            <Card>
+            <Card className="bg-gradient-card border-border/50 hover:shadow-glow transition-all duration-300 hover:scale-[1.02] animate-slide-up" style={{ animationDelay: '300ms' }}>
               <CardContent className="flex items-center justify-between p-6">
                 <div>
                   <p className="text-sm text-muted-foreground">Downloads</p>
-                  <p className="text-2xl font-bold">{userTier === 'free' ? '0' : '12'}</p>
-                  <p className="text-xs text-purple-500">
+                  <p className="text-2xl font-bold animate-scale-in" style={{ animationDelay: '600ms' }}>{userTier === 'free' ? '0' : '12'}</p>
+                  <p className="text-xs text-purple-500 animate-fade-in" style={{ animationDelay: '700ms' }}>
                     {userTier === 'free' ? 'Upgrade for downloads' : '2.4GB saved'}
                   </p>
                 </div>
-                <Download className="h-8 w-8 text-purple-500" />
+                <Download className="h-8 w-8 text-purple-500 animate-float" style={{ animationDelay: '1500ms' }} />
               </CardContent>
             </Card>
           </div>
@@ -176,35 +180,43 @@ const Dashboard: React.FC = () => {
           )}
 
           {/* Main Dashboard Tabs */}
-          <Tabs defaultValue="recommendations" className="space-y-6">
-            <TabsList className={`grid w-full ${isAdmin ? 'grid-cols-6' : 'grid-cols-5'}`}>
-              <TabsTrigger value="recommendations" className="flex items-center gap-2">
+          <Tabs defaultValue="downloads" className="space-y-6 animate-fade-in">
+            <TabsList className={`grid w-full ${isAdmin ? 'grid-cols-7' : 'grid-cols-6'} bg-gradient-card border border-border/50 p-1`}>
+              <TabsTrigger value="downloads" className="flex items-center gap-2 transition-all hover:bg-primary/20">
+                <HardDrive className="h-4 w-4" />
+                <span className="hidden sm:inline">Downloads</span>
+              </TabsTrigger>
+              <TabsTrigger value="recommendations" className="flex items-center gap-2 transition-all hover:bg-primary/20">
                 <TrendingUp className="h-4 w-4" />
                 <span className="hidden sm:inline">Recommendations</span>
               </TabsTrigger>
-              <TabsTrigger value="social" className="flex items-center gap-2">
+              <TabsTrigger value="social" className="flex items-center gap-2 transition-all hover:bg-primary/20">
                 <Users className="h-4 w-4" />
                 <span className="hidden sm:inline">Social</span>
               </TabsTrigger>
-              <TabsTrigger value="premium" className="flex items-center gap-2">
+              <TabsTrigger value="premium" className="flex items-center gap-2 transition-all hover:bg-primary/20">
                 <Crown className="h-4 w-4" />
                 <span className="hidden sm:inline">Premium</span>
               </TabsTrigger>
-              <TabsTrigger value="analytics" className="flex items-center gap-2">
+              <TabsTrigger value="analytics" className="flex items-center gap-2 transition-all hover:bg-primary/20">
                 <BarChart3 className="h-4 w-4" />
                 <span className="hidden sm:inline">Analytics</span>
               </TabsTrigger>
-              <TabsTrigger value="network" className="flex items-center gap-2">
+              <TabsTrigger value="network" className="flex items-center gap-2 transition-all hover:bg-primary/20">
                 <Globe className="h-4 w-4" />
                 <span className="hidden sm:inline">Network</span>
               </TabsTrigger>
               {isAdmin && (
-                <TabsTrigger value="admin" className="flex items-center gap-2">
-                  <Settings className="h-4 w-4" />
-                  <span className="hidden sm:inline">Admin</span>
+                <TabsTrigger value="admin" className="flex items-center gap-2 transition-all hover:bg-primary/20">
+                  <Upload className="h-4 w-4" />
+                  <span className="hidden sm:inline">Upload</span>
                 </TabsTrigger>
               )}
             </TabsList>
+
+            <TabsContent value="downloads" className="space-y-6">
+              <AdvancedDashboard />
+            </TabsContent>
 
             <TabsContent value="recommendations" className="space-y-6">
               <Card>
@@ -290,7 +302,10 @@ const Dashboard: React.FC = () => {
 
             {isAdmin && (
               <TabsContent value="admin">
-                <AdminPanel />
+                <div className="space-y-6">
+                  <AdminPanel />
+                  <MovieDownloadManager />
+                </div>
               </TabsContent>
             )}
           </Tabs>
