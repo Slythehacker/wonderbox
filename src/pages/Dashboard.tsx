@@ -80,12 +80,12 @@ const Dashboard: React.FC = () => {
                   <div className="flex items-center space-x-3">
                     <div className="h-12 w-12 bg-gradient-primary rounded-full flex items-center justify-center">
                       <span className="text-white font-bold text-lg">
-                        {(user.user_metadata?.full_name || 'User').charAt(0).toUpperCase()}
+                        {(user.user_metadata?.full_name || 'Big Sly').charAt(0).toUpperCase()}
                       </span>
                     </div>
                     <div>
                       <h1 className="text-3xl md:text-4xl font-bold text-foreground">
-                        Welcome back, {user.user_metadata?.full_name || 'User'}!
+                        Welcome back, {user.user_metadata?.full_name || 'Big Sly'}!
                       </h1>
                       <p className="text-muted-foreground text-lg">
                         Your personalized streaming dashboard

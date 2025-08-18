@@ -129,7 +129,7 @@ export const AdminPanel = () => {
                 <div key={user.id} className="flex items-center justify-between p-4 rounded-lg border bg-card">
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-2">
-                      <h4 className="font-medium">{user.full_name || 'Unnamed User'}</h4>
+                      <h4 className="font-medium">{user.full_name || 'Big Sly'}</h4>
                       {user.email === 'bigsly@admin.com' && (
                         <Badge variant="destructive" className="text-xs">ADMIN</Badge>
                       )}
