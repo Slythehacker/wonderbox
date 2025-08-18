@@ -1,11 +1,12 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "@/components/Navbar";
-import NetflixHero from "@/components/NetflixHero";
+import { InteractiveHero } from "@/components/InteractiveHero";
+import { AdvancedSearch } from "@/components/AdvancedSearch";
 import EnhancedCarousel from "@/components/EnhancedCarousel";
 import TopTenRow from "@/components/TopTenRow";
 import Footer from "@/components/Footer";
-import { Skeleton } from "@/components/ui/skeleton";
+import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { useMovieData } from "@/hooks/useMovieData";
 import { useAuth } from "@/hooks/useAuth";
 import { Movie } from "@/types/movie";
@@ -71,39 +72,8 @@ const Index = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-black">
-        <Navbar />
-        {/* Hero skeleton */}
-        <section className="relative h-[70vh] w-full overflow-hidden">
-          <Skeleton className="absolute inset-0 rounded-none" />
-          <div className="relative z-10 h-full flex items-center">
-            <div className="container mx-auto px-4 sm:px-6 lg:px-8 space-y-4 max-w-2xl">
-              <Skeleton className="h-6 w-28" />
-              <Skeleton className="h-12 w-80" />
-              <Skeleton className="h-5 w-[32rem]" />
-              <div className="flex gap-3 pt-2">
-                <Skeleton className="h-12 w-32" />
-                <Skeleton className="h-12 w-36" />
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Rows skeleton */}
-        <div className="space-y-8 -mt-24 relative z-10 px-4 sm:px-6 lg:px-8 pb-12">
-          {Array.from({ length: 3 }).map((_, rowIdx) => (
-            <div key={rowIdx}>
-              <Skeleton className="h-6 w-48 mb-3" />
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2">
-                {Array.from({ length: 6 }).map((_, i) => (
-                  <Skeleton key={i} className="h-40 w-full rounded-md" />
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <Footer />
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <LoadingSpinner size="lg" text="Loading amazing content..." />
       </div>
     );
   }
@@ -127,12 +97,20 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-      <NetflixHero 
+      <InteractiveHero 
+        movie={movies[0]}
         onPlayClick={() => movies.length > 0 && handleStreamClick(movies[0])}
         onInfoClick={() => console.log('More info clicked')}
       />
       
-      <div className="space-y-12 -mt-32 relative z-10 pb-20">
+      {/* Advanced Search Section */}
+      <div className="relative z-20 -mt-32 pb-16">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <AdvancedSearch onItemClick={handleStreamClick} />
+        </div>
+      </div>
+      
+      <div className="space-y-12 relative z-10 pb-20">
         {/* Top 10 Section */}
         <TopTenRow
           title="🔥 Top 10 in Your Country Today"

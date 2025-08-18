@@ -7,4 +7,6 @@ export interface Movie {
   imageUrl: string;
   duration: string;
   type?: string;
+  description?: string;
+  backdropUrl?: string;
 }
