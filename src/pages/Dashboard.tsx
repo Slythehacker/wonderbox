@@ -5,7 +5,9 @@ import SocialFeed from '@/components/SocialFeed';
 import PremiumFeatures from '@/components/PremiumFeatures';
 // import AdvancedAnalytics from '@/components/AdvancedAnalytics';
 import GlobalCDN from '@/components/GlobalCDN';
+import { AdminPanel } from '@/components/AdminPanel';
 import { useAuth } from '@/hooks/useAuth';
+import { useAdmin } from '@/hooks/useAdmin';
 // import { useRecommendations } from '@/hooks/useRecommendations';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -26,6 +28,7 @@ import {
 
 const Dashboard: React.FC = () => {
   const { user } = useAuth();
+  const { isAdmin } = useAdmin();
   // Mock data for now
   const recommendations: any[] = [];
   const recommendationsLoading = false;
@@ -99,6 +102,9 @@ const Dashboard: React.FC = () => {
                     <Crown className="h-4 w-4 mr-2" />
                     {userTier} Member
                   </Badge>
+                  {isAdmin && (
+                    <Badge variant="destructive" className="text-xs">ADMIN</Badge>
+                  )}
                   <Button variant="outline" size="sm">
                     <Settings className="h-4 w-4 mr-2" />
                     Settings
@@ -162,9 +168,16 @@ const Dashboard: React.FC = () => {
             </Card>
           </div>
 
+          {/* Admin Panel */}
+          {isAdmin && (
+            <div className="mb-8">
+              <AdminPanel />
+            </div>
+          )}
+
           {/* Main Dashboard Tabs */}
           <Tabs defaultValue="recommendations" className="space-y-6">
-            <TabsList className="grid w-full grid-cols-5">
+            <TabsList className={`grid w-full ${isAdmin ? 'grid-cols-6' : 'grid-cols-5'}`}>
               <TabsTrigger value="recommendations" className="flex items-center gap-2">
                 <TrendingUp className="h-4 w-4" />
                 <span className="hidden sm:inline">Recommendations</span>
@@ -185,6 +198,12 @@ const Dashboard: React.FC = () => {
                 <Globe className="h-4 w-4" />
                 <span className="hidden sm:inline">Network</span>
               </TabsTrigger>
+              {isAdmin && (
+                <TabsTrigger value="admin" className="flex items-center gap-2">
+                  <Settings className="h-4 w-4" />
+                  <span className="hidden sm:inline">Admin</span>
+                </TabsTrigger>
+              )}
             </TabsList>
 
             <TabsContent value="recommendations" className="space-y-6">
@@ -268,6 +287,12 @@ const Dashboard: React.FC = () => {
             <TabsContent value="network">
               <GlobalCDN />
             </TabsContent>
+
+            {isAdmin && (
+              <TabsContent value="admin">
+                <AdminPanel />
+              </TabsContent>
+            )}
           </Tabs>
         </div>
       </main>
